@@ -3,9 +3,11 @@
 * Site/Domain image analysis
 * Pricing
 * Register
+
 **Account Management**
 * Log in / Log out
 * API key / Token
+
 **Image Console**
 * Global On/Off switch
 * Global stats
