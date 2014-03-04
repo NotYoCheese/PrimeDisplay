@@ -1,12 +1,12 @@
 # Website
-## Brochure (not logged in)
+##Brochure (not logged in)
 * Site/Domain image analysis
 * Pricing
 * Register
-## Account Management
+##Account Management
 * Log in / Log out
 * API key / Token
-## Image Console
+##Image Console
 * Global On/Off switch
 * Global stats
 * View images by /path
