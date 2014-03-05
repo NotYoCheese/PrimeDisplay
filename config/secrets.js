@@ -1,7 +1,7 @@
 module.exports = {
-  db: 'mongodb://localhost:27017/test',
+  db: 'mongodb://node-test:reX7MTcDVp16@ds033629.mongolab.com:33629/node-test',
 
-  sessionSecret: "Your Session Secret goes here",
+  sessionSecret: "reX7MTcDVp16reX7MTcDVp16",
 
   localAuth: true,
 
@@ -55,8 +55,8 @@ module.exports = {
 
   googleAuth: true,
   google: {
-    clientID: 'Your Client ID',
-    clientSecret: 'Your Client Secret',
+    clientID: '142664224591-88dt7n9rqjl3d90pvlgjtfo50brn2rus.apps.googleusercontent.com',
+    clientSecret: 'uxquGEo1yKkrwtN4zbXw5QC7',
     callbackURL: '/auth/google/callback',
     passReqToCallback: true
   },
