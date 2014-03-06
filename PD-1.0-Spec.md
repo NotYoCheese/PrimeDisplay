@@ -3,6 +3,8 @@
 * Site/Domain image analysis
 * Pricing
 * Register
+* About
+* Wiki
 
 **Account Management**
 * Log in / Log out
