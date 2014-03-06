@@ -32,7 +32,7 @@
 * Apache, NGINX, IIS webserver plug-ins
 * Joomla, Wordpress, Drupal plug-ins
 * Auctiva, Andale (ebay) plug-ins
-* Cloudflare, MaxCDN, Heroku plug-ins
+* Cloudflare, MaxCDN, Heroku (npm Rquby Gem) plug-ins
 
 **CDN Integration**
 * Cloudflare
