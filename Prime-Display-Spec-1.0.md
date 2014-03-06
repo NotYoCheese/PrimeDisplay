@@ -26,7 +26,9 @@
 
 #Service
 **PD Engine**
+* Manual URL
 * JavaScript
+* S3
 * Apache, NGINX, IIS webserver plug-ins
 * Joomla, Wordpress, Drupal plug-ins
 * Auctiva, Andale (ebay) plug-ins
