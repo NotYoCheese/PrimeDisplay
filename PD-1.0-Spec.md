@@ -17,6 +17,10 @@
 * Image On/Off switch
 * Download image
 
+**PD Engine**
+* JavaScript*
+* Webserver plug-ins for Apache, NGINX, IIS*
+
 
 
 
