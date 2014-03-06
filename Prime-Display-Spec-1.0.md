@@ -48,6 +48,7 @@
 * Billing
 * User stats
 * Image stats
+* Live monitor
 
 **Infrastructure**
 * Security
