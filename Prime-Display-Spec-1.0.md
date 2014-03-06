@@ -23,7 +23,8 @@
 **PD Engine**
 * JavaScript
 * Apache, NGINX, IIS webserver plug-ins
-* Joomla, Wordpress, Drupal & Cloudflare plug-ins
+* Joomla, Wordpress, Drupal plug-ins
+* Cloudflare, MaxCDN, Heroku plug-ins
 
 
 
