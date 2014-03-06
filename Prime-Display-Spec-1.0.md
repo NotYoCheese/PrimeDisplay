@@ -20,6 +20,7 @@
 * Image optimizations: auto enhance, auto-size
 * Image On/Off switch
 * Download image
+* Archive image (DR)
 
 **PD Engine**
 * JavaScript
