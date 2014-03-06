@@ -4,6 +4,7 @@
 * Pricing
 * Register
 * About
+* Blog
 * Wiki
 
 **Account Management**
