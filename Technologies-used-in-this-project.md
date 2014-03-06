@@ -1,9 +1,15 @@
 Website Node.js
+  
 npm - package management
+  
 mocha - test runner
+  
 chai - expectation language
+  
 express - mvc framework
+  
 jade - HTML template engine
+  
 
 async
 bcrypt
