@@ -24,7 +24,9 @@
 * JavaScript
 * Apache, NGINX, IIS webserver plug-ins
 * Joomla, Wordpress, Drupal plug-ins
+* Auctiva, Andale (ebay) plug-ins
 * Cloudflare, MaxCDN, Heroku plug-ins
+
 
 
 
