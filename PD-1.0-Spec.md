@@ -7,6 +7,7 @@
 **Account Management**
 * Log in / Log out
 * API key / Token
+* Billing
 
 **Image Console**
 * Global On/Off switch
