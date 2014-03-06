@@ -43,6 +43,10 @@
 * User stats
 * Image stats
 
+**Infrastructure**
+* Security
+* Servers
+* Storage
 
 
 
