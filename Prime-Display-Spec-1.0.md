@@ -5,11 +5,12 @@
 * Register
 * About
 * Blog
-* Wiki
+* Wiki (Free)
 
 **Account Management**
 * Log in / Log out
 * API key / Token
+* Support
 * Billing
 
 **Image Console**
