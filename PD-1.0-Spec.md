@@ -18,8 +18,9 @@
 * Download image
 
 **PD Engine**
-* JavaScript*
-* Webserver plug-ins for Apache, NGINX, IIS*
+* JavaScript
+* Apache, NGINX, IIS webserver plug-ins
+* Joomla, Wordpress, Drupal & Cloudflare plug-ins
 
 
 
