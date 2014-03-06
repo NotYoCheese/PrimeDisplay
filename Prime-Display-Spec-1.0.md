@@ -16,7 +16,7 @@
 * Global stats
 * View images by /path
 * Image stats
-* Edit images: auto enhance, crop, rotate, filter, convert to
+* Select/Edit images: auto enhance, crop, rotate, filter, convert to
 * Image On/Off switch
 * Download image
 
