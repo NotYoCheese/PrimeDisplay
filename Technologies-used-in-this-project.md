@@ -1,11 +1,12 @@
 Website Node.js
   
-* npm - package management
-* mocha - test runner
 * chai - expectation language
 * express - mvc framework
 * jade - HTML template engine
-  
+* less - caw language  
+* mocha - test runner
+* npm - package management
+* uglify-js - code minifier
 
 Uninvestigated:
 * async
@@ -20,7 +21,6 @@ Uninvestigated:
 * fbgraph
 * github-api
 * lastfm
-* less
 * mongoose
 * node-foursquare
 * node-linkedin
@@ -39,7 +39,6 @@ Uninvestigated:
 * tumblr
 * twilio
 * twit
-* uglify-js
 * underscore
 * validator
 * zombie
