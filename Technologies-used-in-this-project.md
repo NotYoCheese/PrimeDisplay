@@ -2,6 +2,8 @@ Key files:
 package.json - equivalent to ruby gem file. references all the npm packages used by the project. used by automated installers.
 app.js - does the job of 'rake routes' maps controllers to paths.
 
+temp heroku deployment: http://enigmatic-beach-1528.herokuapp.com
+
 Website Node.js
 
 * chai - expectation language
