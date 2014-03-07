@@ -4,6 +4,8 @@ app.js - does the job of 'rake routes' maps controllers to paths.
 
 temp heroku deployment: http://enigmatic-beach-1528.herokuapp.com
 
+potential graphics wrapper: http://aheckmann.github.io/gm/
+
 Website Node.js
 
 * chai - expectation language
