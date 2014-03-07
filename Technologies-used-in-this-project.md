@@ -1,10 +1,15 @@
+Key files:
+package.json - equivalent to ruby gem file. references all the npm packages used by the project. used by automated installers.
+app.js - does the job of 'rake routes' maps controllers to paths.
+
 Website Node.js
-  
+
 * chai - expectation language
 * express - mvc framework
 * jade - HTML template engine
 * less - caw language  
 * mocha - test runner
+* mongoose - Object Database Manager (ODM) talks to mongoose.
 * npm - package management
 * uglify-js - code minifier
 
@@ -21,7 +26,6 @@ Uninvestigated:
 * fbgraph
 * github-api
 * lastfm
-* mongoose
 * node-foursquare
 * node-linkedin
 * nodemailer
