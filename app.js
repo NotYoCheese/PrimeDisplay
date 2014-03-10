@@ -11,14 +11,13 @@ var passport = require('passport');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
 
-
-
 /**
  * Load controllers.
  */
 
 var homeController = require('./controllers/home');
 var aboutController = require('./controllers/about');
+var demoController = require('./controllers/demo');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
@@ -71,6 +70,10 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(expressValidator());
 app.use(express.methodOverride());
+app.use(function (req, res, next) {
+    res.set('X-Powered-By', 'NLA');
+    next();
+});
 app.use(express.session({
   secret: secrets.sessionSecret,
   store: new MongoStore({
@@ -102,6 +105,7 @@ app.use(express.errorHandler());
 
 app.get('/', homeController.index);
 app.get('/about', aboutController.getAbout);
+app.get('/demo/:effect?', demoController.getDemo);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);

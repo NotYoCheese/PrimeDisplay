@@ -1,0 +1,32 @@
+extends layout
+block content
+  h1PrimeDisplay
+  p.lead
+    |Image management, manipulation and delivery
+  p here's a param:
+    effect 
+  #example-wrap
+    pre#example
+      code(data-code='default')
+        |var gm = require('gm');
+        |  gm('/path/to/image.jpg')
+        |  .resize(353, 257)
+        |  .autoOrient()
+        |  .write(writeStream, function (err) {
+        |  if (!err) console.log(' hooray! ');
+        |  });"
+
+    #frame-wrap
+      div(style='background: transparent url(/img/nodejs.png) no-repeat;')
+      img#imgToReplace(src=imagePath)
+  #btns
+    button#blur(type='button') blur
+    button#implode(type='button') implode
+    button#contrast(type='button') constrast
+    button#colorize(type='button') colorize
+    button#equalize(type='button') equalize
+    button#sepia(type='button') sepia
+    button#swirl(type='button') swirl
+    button#rotate(type='button') rotate
+    button#rotate-edge(type='button') rotate-edge
+    button#flip-rotate-edge(type='button') flip-rotate-edge
