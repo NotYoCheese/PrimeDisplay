@@ -1,8 +1,7 @@
 extends layout
 block content
-  h1PrimeDisplay
-  p.lead
-    |Image management, manipulation and delivery
+  .page-header
+    h1 Image Effects
 
   .row
       .col-md-4
@@ -12,6 +11,7 @@ block content
           img#imgToReplace
 
   .row
-    #btns
-      each btnTitle, btnId in {blur: 'blur', implode: 'implode', contrast: 'contrast', colorize: 'colorize', equalize: 'equalize', sepia: 'sepia', swirl: 'swirl', rotate: 'rotate', rotateedge: 'rotate edge', fliprotateedge: 'flip rotate edge'}
-        a.col-md-1.btn.btn-lg.btn-primary(id=btnId, href='#', role='button')= btnTitle
+    p
+      #btns
+        each btnTitle, btnId in {blur: 'blur', implode: 'implode', contrast: 'contrast', colorize: 'colorize', equalize: 'equalize', sepia: 'sepia', swirl: 'swirl', rotate: 'rotate', rotateedge: 'rotate edge', fliprotateedge: 'flip rotate edge'}
+          a.col-md-1.btn.btn-lg.btn-primary(id=btnId, href='#', role='button')= btnTitle
