@@ -4,20 +4,14 @@ block content
   p.lead
     |Image management, manipulation and delivery
 
-    #frame-wrap
-      div(style='background: transparent url(/img/nodejs.png) no-repeat;')
-      img#originalImage(src=imagePath)
-      #processedImage
-        img#imgToReplace
-      
-  #btns
-    button#blur(type='button') blur
-    button#implode(type='button') implode
-    button#contrast(type='button') constrast
-    button#colorize(type='button') colorize
-    button#equalize(type='button') equalize
-    button#sepia(type='button') sepia
-    button#swirl(type='button') swirl
-    button#rotate(type='button') rotate
-    button#rotateedge(type='button') rotate-edge
-    button#fliprotateedge(type='button') flip-rotate-edge
+  .row
+      .col-md-4
+        img#originalImage(src=imagePath)
+      .col-md-4
+        #processedImage
+          img#imgToReplace
+
+  .row
+    #btns
+      each btnTitle, btnId in {blur: 'blur', implode: 'implode', contrast: 'contrast', colorize: 'colorize', equalize: 'equalize', sepia: 'sepia', swirl: 'swirl', rotate: 'rotate', rotateedge: 'rotate edge', fliprotateedge: 'flip rotate edge'}
+        a.col-md-1.btn.btn-lg.btn-primary(id=btnId, href='#', role='button')= btnTitle

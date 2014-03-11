@@ -25,7 +25,7 @@ channel.bind('primedisplay_monitor', function(data)
 });
 
 function prepareEventHandlers() {
-    $("#btns > button").click(function() {
+    $("#btns > a.btn").click(function() {
         console.log("button id: " + this.id);
         var url = '/demo/' + this.id;
         $.ajax({
