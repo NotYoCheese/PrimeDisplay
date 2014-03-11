@@ -31,9 +31,9 @@ function prepareEventHandlers() {
         $.ajax({
             url: url,
             cache: false,
-            timeout: 5000,
+            timeout: 30000,
             success: function(data) {
-                $('#imgToReplace').attr("src", "data:image/png;base64," + data).show();
+                $('#imgToReplace').attr("src", "data:image/jpeg;base64," + data).show();
                 $('#imgToReplace').show();
             },
             error: function(jqXHR, textStatus, errorThrown) {

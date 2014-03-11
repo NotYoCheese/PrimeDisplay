@@ -3,31 +3,12 @@
  * Demo page.
  */
 var gm = require('gm');
-
-function blur() {
-    var imageMagick = gm.subClass({ imageMagick: true });
-    console.log("im object: ");
-    console.dir(imageMagick);
-    imageMagick('public/img/nodejs.png')
-        .blur(30, 20)
-        .resize(353, 257)
-        .autoOrient()
-        .write('public/img/nodejs2.png', function (err) {
-          if (err) {
-              console.log("error:  " + err);
-          }
-        });
-}
-function writeImageToResponse(err, buffer) {
-    var img = new Buffer(buffer, 'binary').toString('base64');
-    response.send(img);
-}
-
+var ResultX = 480
 var effects = {
     blur: function(imagePath, response, im) {
         im(imagePath)
             .blur(30, 20)
-            .resize(353, 257)
+            .resize(ResultX)
             .autoOrient()
             .toBuffer(function(err, buffer) {
                 var img = new Buffer(buffer, 'binary').toString('base64');
@@ -37,7 +18,7 @@ var effects = {
     implode: function(imagePath, response, im) {
         im(imagePath)
             .implode(-1.2)
-            .resize(353, 257)
+            .resize(ResultX)
             .autoOrient()
             .toBuffer(function(err, buffer) {
                 var img = new Buffer(buffer, 'binary').toString('base64');
@@ -47,7 +28,7 @@ var effects = {
     contrast: function(imagePath, response, im) {
         im(imagePath)
             .contrast(-6)
-            .resize(353, 257)
+            .resize(ResultX)
             .autoOrient()
             .toBuffer(function(err, buffer) {
                 var img = new Buffer(buffer, 'binary').toString('base64');
@@ -57,7 +38,7 @@ var effects = {
     colorize: function(imagePath, response, im) {
         im(imagePath)
             .colorize(200, 200, 256)
-            .resize(353, 257)
+            .resize(ResultX)
             .autoOrient()
             .toBuffer(function(err, buffer) {
                 var img = new Buffer(buffer, 'binary').toString('base64');
@@ -67,7 +48,7 @@ var effects = {
     equalize: function(imagePath, response, im) {
         im(imagePath)
             .equalize()
-            .resize(353, 257)
+            .resize(ResultX)
             .autoOrient()
             .toBuffer(function(err, buffer) {
                 var img = new Buffer(buffer, 'binary').toString('base64');
@@ -77,7 +58,7 @@ var effects = {
     sepia: function(imagePath, response, im) {
         im(imagePath)
             .sepia()
-            .resize(353, 257)
+            .resize(ResultX)
             .autoOrient()
             .toBuffer(function(err, buffer) {
                 var img = new Buffer(buffer, 'binary').toString('base64');
@@ -86,7 +67,7 @@ var effects = {
     },
     swirl: function(imagePath, response, im) {
         im(imagePath)
-            .resize(353, 257)
+            .resize(ResultX)
             .region(101, 112, 90, 87)
             .swirl(200)
             .autoOrient()
@@ -98,7 +79,7 @@ var effects = {
     rotate: function(imagePath, response, im) {
         im(imagePath)
             .rotate('green', -25)
-            .resize(353, 257)
+            .resize(ResultX)
             .autoOrient()
             .toBuffer(function(err, buffer) {
                 var img = new Buffer(buffer, 'binary').toString('base64');
@@ -109,7 +90,7 @@ var effects = {
         im(imagePath)
             .rotate('green', -25)
             .edge(3)
-            .resize(353, 257)
+            .resize(ResultX)
             .autoOrient()
             .toBuffer(function(err, buffer) {
                 var img = new Buffer(buffer, 'binary').toString('base64');
@@ -121,7 +102,7 @@ var effects = {
             .flip()
             .rotate('green', -25)
             .edge(3)
-            .resize(353, 257)
+            .resize(ResultX)
             .autoOrient()
             .toBuffer(function(err, buffer) {
                 var img = new Buffer(buffer, 'binary').toString('base64');
@@ -135,7 +116,7 @@ exports.getDemo = function(req, res) {
     console.log("req: ");
     console.dir(req.params);
     console.log("effect: " + effect);
-    var imgPath = '/img/nodejs.png';
+    var imgPath = '/img/sample.jpg';
     if (effect != undefined) {
         console.log("writin img");
         var imageMagick = gm.subClass({ imageMagick: true });
