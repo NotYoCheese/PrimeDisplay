@@ -4,11 +4,13 @@ var User = require('../models/User');
 
 describe('User attributes', function() {
   before(function(done) {
+    console.log("calling new User()");
     user = new User({
       email: 'janedoe@gmail.com',
       password: 'password'
     });
     done();
+    console.log("new User() done!");
   });
 
   it('email should be a string', function() {

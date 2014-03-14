@@ -113,12 +113,8 @@ var effects = {
 
 exports.getDemo = function(req, res) {
     var effect = req.params.effect;
-    console.log("req: ");
-    console.dir(req.params);
-    console.log("effect: " + effect);
     var imgPath = '/img/sample.jpg';
     if (effect != undefined) {
-        console.log("writin img");
         var imageMagick = gm.subClass({ imageMagick: true });
         effects[effect]('public' + imgPath, res, imageMagick);
     } else {

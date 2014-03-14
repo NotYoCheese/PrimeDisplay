@@ -17,6 +17,7 @@ var connectAssets = require('connect-assets');
 
 var homeController = require('./controllers/home');
 var aboutController = require('./controllers/about');
+var analyzeController = require('./controllers/analyze');
 var demoController = require('./controllers/demo');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
@@ -105,6 +106,7 @@ app.use(express.errorHandler());
 
 app.get('/', homeController.index);
 app.get('/about', aboutController.getAbout);
+app.get('/analyze', analyzeController.getAbout);
 app.get('/demo/:effect?', demoController.getDemo);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
