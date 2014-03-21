@@ -2,6 +2,7 @@
  * GET /demo
  * Demo page.
  */
+"use strict"
 var gm = require('gm');
 var ResultX = 480
 var effects = {

@@ -24,23 +24,43 @@ channel.bind('primedisplay_monitor', function(data)
     }
 });
 
-function prepareEventHandlers() {
-    $("#btns > a.btn").click(function() {
-        console.log("button id: " + this.id);
-        var url = '/demo/' + this.id;
-        $.ajax({
-            url: url,
-            cache: false,
-            timeout: 30000,
-            success: function(data) {
-                $('#imgToReplace').attr("src", "data:image/jpeg;base64," + data).show();
-                $('#imgToReplace').show();
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log("error: " + textStatus);
-            }
-        });
+var handleImageDemoClick = function() {
+    console.log("button id: " + this.id);
+    var url = '/demo/' + this.id;
+    $.ajax({
+        url: url,
+        cache: false,
+        timeout: 30000,
+        success: function(data) {
+            $('#imgToReplace').attr("src", "data:image/jpeg;base64," + data).show();
+            $('#imgToReplace').show();
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log("error: " + textStatus);
+        }
     });
+};
+
+var handleAnalyzeClick = function() {
+    var urlToScrape = $('#site').text;
+    var url = '/analyze';
+    $.ajax({
+        url: url,
+        cache: false,
+        timeout: 30000,
+        type: post,
+        success: function(data) {
+            $('#imgLIst').text = data;
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log("error: " + textStatus);
+        }
+    });
+};
+
+function prepareEventHandlers() {
+    $("#btns > a.btn").click(handleImageDemoClick);
+//    $("#analyzeBtn").click(handleAnalyzeClick);
 }
 
 
