@@ -24,6 +24,7 @@ var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
 var forgotController = require('./controllers/forgot');
 var resetController = require('./controllers/reset');
+var imageStatController = require('./controllers/image-stat');
 
 /**
  * API keys + Passport configuration.
@@ -43,6 +44,7 @@ var app = express();
  */
 
 mongoose.connect(secrets.db);
+/* mongoose.connect('mongodb://localhost/primedisplay'); */
 mongoose.connection.on('error', function() {
   console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.');
 });
@@ -67,6 +69,7 @@ app.use(express.compress());
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.cookieParser());
+app.use(express.cookieParser({secret: secrets.sessionSecret}));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(expressValidator());
@@ -79,6 +82,7 @@ app.use(express.session({
   secret: secrets.sessionSecret,
   store: new MongoStore({
     url: secrets.db,
+    /* url: 'mongodb://localhost/primedisplay', */
     auto_reconnect: true
   })
 }));
@@ -91,7 +95,13 @@ app.use(function(req, res, next) {
   res.locals.secrets = secrets;
   next();
 });
+/*
+*/
 app.use(flash());
+app.use(function(req, res, next) {
+  res.locals._csrf = req.csrfToken();
+  return next();
+});
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 app.use(function(req, res) {
@@ -178,6 +188,16 @@ app.get('/auth/venmo', passport.authorize('venmo', { scope: 'make_payments acces
 app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '/api' }), function(req, res) {
   res.redirect('/api/venmo');
 });
+
+
+/**
+ * ImageStat
+ */
+
+app.get('/image-stat/:client/:image', imageStatController.getImageStat);
+app.post('/image-stat/:client/:image', imageStatController.postImageStat);
+app.get('/image-stat/served', imageStatController.getImageStatServed);
+app.post('/image-stat/served', imageStatController.postImageStatServed);
 
 /**
  * Start Express server.
