@@ -10,10 +10,12 @@ block content
     .form-group
       label(class='col-sm-2 control-label', for='site') Site
       .col-sm-8
-        input.form-control(type='text', name='site', id='site', autofocus=true)
+        input.form-control(type='text', name='site', id='site', autofocus=true, value='http://localhost:3000')
     .form-group
       .col-sm-offset-2.col-sm-8
         button.btn.btn-default#analyzeBtn(type='submit')
           | Analyze
   pre
-    p#imgList
+
+    p #{urlToScrape}
+    p#imgList #{imgList.page}
