@@ -116,7 +116,8 @@ app.use(express.errorHandler());
 
 app.get('/', homeController.index);
 app.get('/about', aboutController.getAbout);
-app.get('/analyze', analyzeController.getAbout);
+app.get('/analyze', analyzeController.getAnalyze);
+app.post('/analyze', analyzeController.postAnalyze);
 app.get('/demo/:effect?', demoController.getDemo);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
