@@ -1,5 +1,5 @@
 doctype html
-html
+html(ng-app='myApp')
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
@@ -7,9 +7,11 @@ html
     meta(name='description', content='')
     meta(name='author', content='')
     title #{title}
-    script(src='http://js.pusher.com/2.1/pusher.min.js', type='text/javascript')
+    script(src='http://js.pusher.com/2.1/pusher.min.js')
+    
     != css('styles')
     != js('application')
+    block head
   body
     #wrap
       include partials/navigation

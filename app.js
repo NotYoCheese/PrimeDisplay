@@ -58,6 +58,15 @@ var day = (hour * 24);
 var week = (day * 7);
 var month = (day * 30);
 
+// Modify csrf handling to work with Angular
+var csrfValue = function(req) {
+  var token = (req.body && req.body._csrf)
+    || (req.query && req.query._csrf)
+    || (req.headers['x-csrf-token'])
+    || (req.headers['x-xsrf-token']);
+  return token;
+};
+
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -86,13 +95,20 @@ app.use(express.session({
     auto_reconnect: true
   })
 }));
-app.use(express.csrf());
+// Have csrf use modified location if necessary
+app.use(express.csrf({value: csrfValue}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next) {
   res.locals.user = req.user;
   res.locals.token = req.csrfToken();
   res.locals.secrets = secrets;
+  next();
+});
+
+// So angular can find the token too
+app.use(function(req, res, next) {
+  res.cookie('XSRF-TOKEN', req.session._csrf);
   next();
 });
 /*
