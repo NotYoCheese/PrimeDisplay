@@ -7,10 +7,6 @@ block content
     |Copy the following JavaScript and paste into the tail end of each web page which PrimeDisplay should cache images.
     |You need to have a website filled in on your account page
 
-    pre.
-      #{_pd_host}
-      #{user}
-
     if user.profile.website && user.profile.website.length > 0
       pre.
         &lt;script>
