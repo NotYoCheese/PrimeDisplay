@@ -25,6 +25,7 @@ var contactController = require('./controllers/contact');
 var forgotController = require('./controllers/forgot');
 var resetController = require('./controllers/reset');
 var imageStatController = require('./controllers/image-stat');
+var myJavaScriptController = require('./controllers/my-javascript');
 
 /**
  * API keys + Passport configuration.
@@ -205,6 +206,12 @@ app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '
   res.redirect('/api/venmo');
 });
 
+
+/**
+ * My JavaScript
+ */
+
+app.get('/my-javascript', myJavaScriptController.getMyJavaScript);
 
 /**
  * ImageStat
