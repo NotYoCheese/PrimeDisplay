@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  .page-header
+    h1 PrimeDisplay Image Stats
+
+
+    - for (var i in _pd_allImages) {
+         div
+           ul
+             li
+               img(src='#{_pd_allImages[i].raw_url}', width='50')
+             li Impressions: #{_pd_allImages[i].impressions}
+             li Server URL: #{_pd_allImages[i].serve_url}
+             li Created: #{_pd_allImages[i].creationDate}
+             li Everything: #{_pd_allImages[i]}
+    -}

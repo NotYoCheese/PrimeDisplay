@@ -108,7 +108,7 @@ app.use(function(req, res, next) {
 
 // So angular can find the token too
 app.use(function(req, res, next) {
-  res.cookie('XSRF-TOKEN', req.session._csrf);
+  res.cookie('XSRF-TOKEN', req.csrfToken());
   next();
 });
 /*
@@ -210,8 +210,7 @@ app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '
  * ImageStat
  */
 
-app.get('/image-stat/:client/:image', imageStatController.getImageStat);
-app.post('/image-stat/:client/:image', imageStatController.postImageStat);
+app.get('/image-stat', imageStatController.getImageStat);
 app.get('/image-stat/served', imageStatController.getImageStatServed);
 app.post('/image-stat/served', imageStatController.postImageStatServed);
 
