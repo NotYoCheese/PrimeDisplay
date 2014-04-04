@@ -3,6 +3,7 @@
  */
 
 var express = require('express');
+var cors = require('cors');
 var MongoStore = require('connect-mongo')(express);
 var flash = require('express-flash');
 var path = require('path');
@@ -39,6 +40,7 @@ var passportConf = require('./config/passport');
  */
 
 var app = express();
+app.use(cors());
 
 /**
  * Mongoose configuration.
@@ -103,16 +105,16 @@ app.use(passport.session());
 app.use(function(req, res, next) {
   res.locals.user = req.user;
   res.locals.token = req.csrfToken();
+  res.cookie('XSRF-TOKEN', req.csrfToken());
   res.locals.secrets = secrets;
   next();
 });
 
+/*
 // So angular can find the token too
 app.use(function(req, res, next) {
-  res.cookie('XSRF-TOKEN', req.csrfToken());
   next();
 });
-/*
 */
 app.use(flash());
 app.use(function(req, res, next) {
@@ -130,6 +132,8 @@ app.use(express.errorHandler());
 /**
  * Application routes.
  */
+
+app.options('*', cors());
 
 app.get('/', homeController.index);
 app.get('/about', aboutController.getAbout);
@@ -219,7 +223,7 @@ app.get('/my-javascript', myJavaScriptController.getMyJavaScript);
 
 app.get('/image-stat', imageStatController.getImageStat);
 app.get('/image-stat/served', imageStatController.getImageStatServed);
-app.post('/image-stat/served', imageStatController.postImageStatServed);
+app.get('/image-stat/add', imageStatController.getImageStatAdd);
 
 /**
  * Start Express server.
@@ -228,5 +232,6 @@ app.post('/image-stat/served', imageStatController.postImageStatServed);
 app.listen(app.get('port'), function() {
   console.log("✔ Express server listening on port %d in %s mode", app.get('port'), app.settings.env);
 });
+
 
 module.exports = app;

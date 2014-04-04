@@ -8,7 +8,6 @@ var ImageStat = require('../models/image-stat');
 
 exports.getImageStat = function(req, res)
 {
-	//res.render('image-stat');
         ImageStat
 	.find()
 	.exec(function(err, results)
@@ -30,9 +29,9 @@ exports.getImageStatServed = function(req, res)
 	res.render('image-stat-served');
 };
 
-exports.postImageStatServed = function(req, res)
+exports.getImageStatAdd = function(req, res)
 {
-        ImageStat.findOne({'raw_url': req.body.raw_url}, function(err, result)
+        ImageStat.findOne({'raw_url': req.query.raw_url}, function(err, result)
         {
                 if (err)
                 {
@@ -44,15 +43,21 @@ exports.postImageStatServed = function(req, res)
 			var isNew = false;
                         if(result == null)
                         {
-                                result = new ImageStat({'raw_url': req.body.raw_url, 'impressions': 1});
-                                result.save();
+                                result = new ImageStat({'raw_url': req.query.raw_url, 'impressions': 1, 'user' : req.query.user_id});
 				isNew = true;
                         }
                         else
                         {
                                 result.impressions++;
-                                result.save();
                         }
+			result.save();
+			ImageStat.findOne({'raw_url': req.query.raw_url}, function(err, check)
+			{
+				if(check == null)
+				{
+console.log("WTF");
+				}
+			});
                         res.send({result: result, isNew: isNew});
                 }
         });

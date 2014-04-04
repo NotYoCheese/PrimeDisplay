@@ -1,6 +1,24 @@
+extends layout
 
-|maholt 
-form(action='/image-stat/served',method='post')
-	input(type='text', name='raw_url')
-	input(type='hidden', name='_csrf', value=token)
-	input(type='submit',name='served', value='served')
+block content
+  .page-header
+    h1 PrimeDisplay JavaScript
+
+    |Copy the following JavaScript and paste into the tail end of each web page which PrimeDisplay should cache images.
+    |You need to have a website filled in on your account page
+
+    if(user)
+      pre.
+        #{user}
+        #{user._id}
+
+    form(action='http://localhost:3000/image-stat/served/add',method='get',id='pdisform')
+      |Raw URL
+      input(type='text', name='raw_url')
+      |User ID:
+      if(user)
+        input(type='text', name='user_id', value=user._id)
+      else
+        input(type='text', name='user_id')
+      input(type='hidden', name='_csrf', value=token)
+      input(type='submit',name='served', value='served')
