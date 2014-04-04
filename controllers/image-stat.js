@@ -43,7 +43,7 @@ exports.getImageStatAdd = function(req, res)
 			var isNew = false;
                         if(result == null)
                         {
-                                result = new ImageStat({'raw_url': req.query.raw_url, 'impressions': 1, 'user' : req.query.user_id});
+                                result = new ImageStat({'raw_url': req.query.raw_url, 'impressions': 1, 'user' : req.query._pdAccount});
 				isNew = true;
                         }
                         else
@@ -56,6 +56,7 @@ exports.getImageStatAdd = function(req, res)
 				if(check == null)
 				{
 console.log("WTF");
+console.log("{'raw_url': " + req.query.raw_url + ", 'impressions': 1, 'user' : " + req.query._pdAccount + "}");
 				}
 			});
                         res.send({result: result, isNew: isNew});
