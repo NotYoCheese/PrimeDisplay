@@ -108,7 +108,7 @@ app.use(function(req, res, next) {
 
 // So angular can find the token too
 app.use(function(req, res, next) {
-  res.cookie('XSRF-TOKEN', req.session._csrf);
+  res.cookie('XSRF-TOKEN', req.csrfToken());
   next();
 });
 /*
