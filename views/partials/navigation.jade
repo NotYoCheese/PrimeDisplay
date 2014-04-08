@@ -19,6 +19,11 @@
           a(href='/api') API Browser
         li(class=title=='Contact'?'active':undefined)
           a(href='/contact') Contact
+        if user
+          li(class=title=='My JavaScript'?'active':undefined)
+            a(href='/my-javascript') My JavaScript
+          li(class=title=='Image Stats'?'active':undefined)
+            a(href='/image-stat') Image Stats
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=title=='Login'?'active':undefined)

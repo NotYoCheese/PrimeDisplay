@@ -1,0 +1,37 @@
+extends layout
+
+block content
+  .page-header
+    h1 PrimeDisplay JavaScript
+
+    |Copy the following JavaScript and paste into the tail end of each web page which PrimeDisplay should cache images.
+    |You need to have a website filled in on your account page
+
+    pre.
+      #{user}
+      #{user._id}
+
+    if user.profile.website && user.profile.website.length > 0
+      pre.
+        &lt;script>
+          var _pd = _pd || [];
+          _pd.push(['_pdAccount', 'PD-#{user._id}']);
+          var _pdimgs = document.getElementsByTagName("img");
+          var _pdimgsrc = [];
+          for (var i = 0; i < _pdimgs.length; i++) { _pdimgsrc[i] = _pdimgs[i].src; }
+          var x = document.createElement("a");
+          var _pdimgs = _pdimgs || document.getElementsByTagName("img");
+          for (var i = 0; i < _pdimgs.length; i++) {
+            x.href = _pdimgs[i].src;
+            if(x.hostname.indexOf('#{user.profile.website}') != -1) {
+  
+              // HEY!! OVER HERE!!! THIS NEEDS TO BE THE REAL URL
+              // _pdimgs[i].src = "https://nlamon.nla.com/cacti/rtr_monitor/imagebeach/index.php?url=" + encodeURIComponent(imgs[i].src) + "&host=" + window.location.hostname;
+  
+            }
+          }
+          (function() { var pd = document.createElement('script'); pd.type = 'text/javascript'; pd.async = true; pd.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + '#{_pd_host}/js/pdimg.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(pd, s);})();
+        &lt;/script>
+    else
+      |You do not have a website in your profile. Fill that out.
+
