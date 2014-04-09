@@ -1,0 +1,18 @@
+{
+  "name": "scraper",
+  "version": "0.0.0",
+  "description": "",
+  "main": "scraper.js",
+  "dependencies": {
+    "async": "^0.6.2",
+    "cheerio": "^0.13.1",
+    "request": "^2.34.0",
+    "url": "^0.7.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
