@@ -1,5 +1,20 @@
 extends analyze
 
 block results
-  p These are my results:
-  p Score: #{analysisData.score}
+  .container
+    .row
+      .col-xs-4.col-xs-offset-4
+        table.table
+          tr
+            td 
+              h3.small Perf. Grade
+              h3 #{analysisData.score}/100
+            td
+              h3.small Requests
+              h3 #{analysisData.pageStats.numberResources}
+            td
+              h3.small Load Time
+              h3 
+            td
+              h3.small Page Size
+              h3 #{humanReadablePageSize}
