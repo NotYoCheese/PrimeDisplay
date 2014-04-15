@@ -1,6 +1,8 @@
 "use strict";
 
 var Readable = require('stream').Readable;
+var Scraper = require('../models/scraper')
+
 
 /**
  * GET /analyze
@@ -72,27 +74,53 @@ var data ={
 ]};
 
 exports.postAnalyze = function(req, res) {
-    var scrapeList,
+  var scraper = Scraper.create();
+  var scrapeList,
         errors;
-    req.assert('site', 'Please enter a valid URL').notEmpty();
-    errors = req.validationErrors();
+  req.assert('site', 'Please enter a valid URL').notEmpty();
+  errors = req.validationErrors();
+  console.log(req.body);
 
-    if (errors) {
-        req.flash('errors', errors);
-        return res.redirect('/analyze');
-    }
-    console.log("returning data");
-    var urlToScrape = req.body.site;
-    var rs = new Readable;
-    var index = 0;
-    rs.push(begin);
-    rs._read = function () {
-        rs.push(JSON.stringifyObject(middle[index++]));
-        if (index >= middle.length) {
-            rs.push(end);
-            rs.push(null);
-        }
-    };
-    rs.pipe(process.stdout);
-    rs.pipe(res);
+  if (errors) {
+      console.log('errors: ');
+      console.dir(errors);
+      req.flash('errors', errors);
+      return res.redir('/analyze');
+  }
+  console.log("returning data");
+  var urlToScrape = req.body.site;
+
+  scraper.analyzeSite(urlToScrape, function(err, data) {
+    var analysisData = JSON.parse(data);
+    //console.log(imgList);
+    // for (var prop in imgList) {
+    //   //console.log('imgList.'+prop + ': '+imgList[prop]);
+    //   console.log('prop: ' + prop);
+    // }
+    console.log("Done. Score: " + analysisData.score);
+    return res.render('analyze_results', {analysisData: analysisData});
+    //res.render('analyze', {scrapedPages: imgList});
+  });
+
+  //res.json(data);
+
+
+  // scraper.scrapeSite(urlToScrape, 10, function(err, imgList) {
+  //   console.log("Done!");
+  //   res.json(imgList);
+  //   //res.render('analyze', {scrapedPages: imgList});
+  // });
+
+  // var rs = new Readable;
+  // var index = 0;
+  // rs.push(begin);
+  // rs._read = function () {
+  //     rs.push(JSON.stringifyObject(middle[index++]));
+  //     if (index >= middle.length) {
+  //         rs.push(end);
+  //         rs.push(null);
+  //     }
+  // };
+  // rs.pipe(process.stdout);
+  // rs.pipe(res);
 };

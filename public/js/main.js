@@ -42,15 +42,24 @@ var handleImageDemoClick = function() {
 };
 
 var handleAnalyzeClick = function() {
-    var urlToScrape = $('#site').text;
+    var urlToScrape = $('#site').attr('value');
+    console.log('handle click');
+    console.log($('#_csrf').attr('value'));
+    console.log($('#site').attr('value'));
     var url = '/analyze';
     $.ajax({
         url: url,
         cache: false,
-        timeout: 30000,
-        type: post,
+        timeout: 60000,
+        type: 'post',
+        data: {site: urlToScrape, _csrf:$('#_csrf').attr('value')},
         success: function(data) {
-            $('#imgLIst').text = data;
+            console.log('got data');
+            //console.dir($('#imgList'));
+            var googleData = JSON.parse(data);
+            console.dir(data);
+            html = 'Page Speed: ' + googleData.score;
+            $('#imgList').html(html);
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log("error: " + textStatus);
@@ -60,7 +69,7 @@ var handleAnalyzeClick = function() {
 
 function prepareEventHandlers() {
     $("#btns > a.btn").click(handleImageDemoClick);
-//    $("#analyzeBtn").click(handleAnalyzeClick);
+    $("#analyzeBtn").click(handleAnalyzeClick);
 }
 
 

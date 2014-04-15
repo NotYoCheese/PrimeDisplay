@@ -5,6 +5,10 @@ module.exports = {
 
   localAuth: true,
 
+  googlePageSpeed: {
+    apiKey: 'AIzaSyAOvKPPQgN53SbANdmkXYo4Lqi0FEzetfs'
+  },
+  
   mailgun: {
     login: 'Your Mailgun SMTP Username',
     password: 'Your Mailgun SMTP Password'

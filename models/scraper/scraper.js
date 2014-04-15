@@ -48,7 +48,9 @@ var ImageScraper = function () {
         return function(err, response, body) {
             //console.log(response.request.uri.href);
             if (err) {
-                console.log(urlToWalk + ": " + err);
+                // TODO: emit error and return to client, or just 
+                // skip page.
+                console.log(parentUrl.href + ": " + err);
             } else if (response.statusCode == 200) {
                 var $ = cheerio.load(body);
                 var pageMap = {page: parentUrl.href, imgList: []};
@@ -59,8 +61,10 @@ var ImageScraper = function () {
                 //var anchorTags = $('a[href]');
                 //console.log('anchor tag count: ' + anchorTags.length);
                 $('a[href]').each(self.processLink(self, parentUrl, $));
-                self.data.eventEmitter.emit('scrapeDone', self);
+            } else {
+                console.log('non-200 response code: ' + response.statusCode);
             }
+            self.data.eventEmitter.emit('scrapeDone', self);
         };
     };
 
@@ -68,7 +72,7 @@ var ImageScraper = function () {
         if ((self.data.urlsToScrape.length > 0) 
          && (self.data.visitedUrls.length < self.data.maxPages)) {
             var urlToScrape = self.data.urlsToScrape.pop();
-            console.log('Walkin: ' + urlToScrape)
+            console.log('Walkin: ' + urlToScrape);
             if (self.data.visitedUrls.indexOf(urlToScrape) == -1) {
                 self.data.visitedUrls.push(urlToScrape);
             
@@ -82,8 +86,12 @@ var ImageScraper = function () {
                 };
                 
                 request(req, self.processScrapedPage(self, parentUrl));
+            } else {
+                console.log('calling completion - inner');
+                self.data.completion(undefined, self.data.imageList);
             }
         } else {
+            console.log('calling completion - outter');
             self.data.completion(undefined, self.data.imageList);
         }
     };
@@ -98,6 +106,23 @@ var ImageScraper = function () {
         this.data.urlsToScrape.push(urlToScrape);
         this.data.completion = completion;
         this.scrape(this);
+    };
+
+    this.analyzeSite = function(urlToScrape, completion) {
+        var googleUrl = "https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url=" +
+        urlToScrape + 
+        "&key=AIzaSyAOvKPPQgN53SbANdmkXYo4Lqi0FEzetfs";
+        var req = {
+            uri : googleUrl,
+            timeout : 50000,
+            headers : {
+                'User-Agent' : 'Mozilla/5.0 (compatible; PrimeDisplay)'
+            }
+        };
+
+        request(req, function(err, response, body) {
+            completion(err, body);
+        });
     };
 
     return this;
