@@ -109,9 +109,10 @@ var ImageScraper = function () {
     };
 
     this.analyzeSite = function(urlToScrape, completion) {
+        //https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url=http://direct.coinsociety.com&key=AIzaSyAOvKPPQgN53SbANdmkXYo4Lqi0FEzetfs
         var googleUrl = "https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url=" +
         urlToScrape + 
-        "&key=AIzaSyAOvKPPQgN53SbANdmkXYo4Lqi0FEzetfs";
+        "&key=AIzaSyAQkevzX-WSF47HILMcFns_qVx-y-YmhC0";
         var req = {
             uri : googleUrl,
             timeout : 50000,

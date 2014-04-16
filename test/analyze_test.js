@@ -35,4 +35,18 @@ describe('GET /analyze', function() {
             });
         });
     });
+
+    it('should allow a URL without a protodol', function(done) {
+        var browser = new Browser({
+            site : 'http://localhost:3000'
+        });
+        browser.visit('/analyze', function() {
+            browser.fill('site', 'http://google.com').pressButton('Analyze', function() {
+                browser.success.should.be["true"];
+                should.not.exist(browser.query('.alert-danger'));
+                done();
+            });
+        });
+    });
+
 });

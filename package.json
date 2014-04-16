@@ -1,9 +1,12 @@
 {
-  "name": "hackathon-starter",
+  "name": "PrimeDisplay",
   "version": "0.0.0",
+   "engines": {
+    "node": "0.10.x"
+  }
   "repository": {
     "type": "git",
-    "url": "https://github.com/sahat/hackathon-starter.git"
+    "url": "https://github.com/NotYoCheese/PrimeDisplay.git"
   },
   "scripts": {
     "start": "node app.js",
@@ -47,7 +50,8 @@
     "uglify-js": "~2.4.12",
     "validator": "~3.3.0",
     "cors": "^2.2.0",
-    "filesize": "^2.0.3"
+    "filesize": "^2.0.3",
+    "cluster": "^0.7.7"
   },
   "devDependencies": {
     "chai": "~1.9.0",

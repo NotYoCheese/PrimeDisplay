@@ -1,5 +1,6 @@
 module.exports = {
   db: 'mongodb://node-test:reX7MTcDVp16@ds033629.mongolab.com:33629/node-test',
+  //db: 'mongodb://localhost/node-test',
 
   sessionSecret: "reX7MTcDVp16reX7MTcDVp16",
 

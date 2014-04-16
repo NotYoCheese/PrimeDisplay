@@ -44,8 +44,6 @@ var handleImageDemoClick = function() {
 var handleAnalyzeClick = function() {
     var urlToScrape = $('#site').attr('value');
     console.log('handle click');
-    console.log($('#_csrf').attr('value'));
-    console.log($('#site').attr('value'));
     var url = '/analyze';
     $.ajax({
         url: url,
