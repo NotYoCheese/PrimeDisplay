@@ -33,8 +33,8 @@ exports.postAnalyze = function(req, res) {
   errors = req.validationErrors();
   
   if (errors) {
-      console.log('errors: ');
-      console.dir(errors);
+      // console.log('errors: ');
+      // console.dir(errors);
       req.flash('errors', errors);
       return res.redirect('/analyze');
   }
@@ -60,12 +60,20 @@ exports.postAnalyze = function(req, res) {
     }
 
     if (analysisData !== undefined) {
-      var humanReadablePageSize = filesize(
-      parseInt(analysisData.pageStats.htmlResponseBytes) +
-      parseInt(analysisData.pageStats.cssResponseBytes) +
-      parseInt(analysisData.pageStats.imageResponseBytes) +
-      parseInt(analysisData.pageStats.javascriptResponseBytes) +
-      parseInt(analysisData.pageStats.otherResponseBytes));
+      var rawPageSize = 0;
+
+      if (analysisData.pageStats.htmlResponseBytes != undefined)
+        rawPageSize += parseInt(analysisData.pageStats.htmlResponseBytes);
+      if (analysisData.pageStats.cssResponseBytes != undefined)
+        rawPageSize += parseInt(analysisData.pageStats.cssResponseBytes);
+      if (analysisData.pageStats.imageResponseBytes != undefined)
+        rawPageSize += parseInt(analysisData.pageStats.imageResponseBytes);
+      if (analysisData.pageStats.javascriptResponseBytes != undefined)
+        rawPageSize += parseInt(analysisData.pageStats.javascriptResponseBytes);
+      if (analysisData.pageStats.otherResponseBytes != undefined)
+        rawPageSize += parseInt(analysisData.pageStats.otherResponseBytes);
+
+      var humanReadablePageSize = filesize(rawPageSize);
 
       return res.render('analyze_results', {urlAnalyzed: urlToScrape,
         humanReadablePageSize: humanReadablePageSize,

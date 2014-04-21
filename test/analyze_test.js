@@ -16,8 +16,14 @@ describe('GET /analyze', function() {
         });
         browser.visit('/analyze', function() {
             browser.fill('site', 'http://google.com').pressButton('Analyze', function() {
-                browser.success.should.be["true"];
+                browser.success.should.be.true;
+
+                //console.log('browser.query(\'.alert-danger\'): ');
+                //console.dir(browser.html('.alert-danger'));
+
                 should.not.exist(browser.query('.alert-danger'));
+                //console.log('browser.query(\'.alert-danger\'): ');
+                //console.dir(browser.query('.alert-danger'));
                 done();
             });
         });
@@ -27,9 +33,10 @@ describe('GET /analyze', function() {
         var browser = new Browser({
             site : 'http://localhost:3000'
         });
+
         browser.visit('/analyze', function() {
-            browser.pressButton('Analyze', function() {
-                browser.success.should.be["true"];
+            browser.fill('site', '').pressButton('Analyze', function() {
+                browser.success.should.be.true;
                 should.exist(browser.query('.alert-danger'));
                 done();
             });
