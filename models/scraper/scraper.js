@@ -108,23 +108,7 @@ var ImageScraper = function () {
         this.scrape(this);
     };
 
-    this.analyzeSite = function(urlToScrape, completion) {
-        //https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url=http://direct.coinsociety.com&key=AIzaSyAOvKPPQgN53SbANdmkXYo4Lqi0FEzetfs
-        var googleUrl = "https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url=" +
-        urlToScrape + 
-        "&key=AIzaSyAQkevzX-WSF47HILMcFns_qVx-y-YmhC0";
-        var req = {
-            uri : googleUrl,
-            timeout : 50000,
-            headers : {
-                'User-Agent' : 'Mozilla/5.0 (compatible; PrimeDisplay)'
-            }
-        };
-
-        request(req, function(err, response, body) {
-            completion(err, body);
-        });
-    };
+    
 
     return this;
 };
