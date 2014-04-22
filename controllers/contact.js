@@ -6,11 +6,11 @@ var smtpTransport = nodemailer.createTransport('SMTP', {
     //    user: secrets.mailgun.login,
     //    pass: secrets.mailgun.password
     //  }
-    service : 'SendGrid',
-    auth : {
-        user : secrets.sendgrid.user,
-        pass : secrets.sendgrid.password
-    }
+  service: 'SendGrid',
+  auth: {
+       user: secrets.sendgrid.user,
+       pass: secrets.sendgrid.password
+  }
 });
 
 /**
@@ -48,7 +48,7 @@ exports.postContact = function(req, res) {
     var name = req.body.name;
     var body = req.body.message;
     var to = 'your@email.com';
-    var subject = 'API Example | Contact Form';
+    var subject = 'Contact Form | Prime Display';
 
     var mailOptions = {
         to : to,

@@ -1,8 +1,9 @@
 module.exports = {
-  db: 'mongodb://node-test:reX7MTcDVp16@ds033629.mongolab.com:33629/node-test',
+
+  db: process.env.MONGODB || 'mongodb://node-test:reX7MTcDVp16@ds033629.mongolab.com:33629/node-test',
   //db: 'mongodb://localhost/node-test',
 
-  sessionSecret: "reX7MTcDVp16reX7MTcDVp16",
+  sessionSecret: process.env.SESSION_SECRET || 'reX7MTcDVp16reX7MTcDVp16',
 
   localAuth: true,
 
@@ -11,106 +12,92 @@ module.exports = {
   },
   
   mailgun: {
-    login: 'Your Mailgun SMTP Username',
-    password: 'Your Mailgun SMTP Password'
+    login: process.env.MAILGUN_LOGIN || 'postmaster@sandbox697fcddc09814c6b83718b9fd5d4e5dc.mailgun.org',
+    password: process.env.MAILGUN_PASSWORD || '29eldds1uri6'
   },
 
   sendgrid: {
-    user: 'Your SendGrid Username',
-    password: 'Your SendGrid Password'
-  },
-
-  gmail: {
-    user: 'Your Gmail Username',
-    password: 'Your Gmail Password'
+    user: process.env.SENDGRID_USER || 'hslogin',
+    password: process.env.SENDGRID_PASSWORD || 'hspassword00'
   },
 
   nyt: {
-    key: 'Your New York Times API Key'
+    key: process.env.NYT_KEY || '9548be6f3a64163d23e1539f067fcabd:5:68537648'
   },
 
   lastfm: {
-    api_key: 'Your API Key',
-    secret: 'Your API Secret'
+    api_key: process.env.LASTFM_KEY || 'c8c0ea1c4a6b199b3429722512fbd17f',
+    secret: process.env.LASTFM_SECRET || 'is cb7857b8fba83f819ea46ca13681fe71'
   },
 
-  facebookAuth: true,
   facebook: {
-    clientID: 'Your App ID',
-    clientSecret: 'Your App Secret',
+    clientID: process.env.FACEBOOK_ID || '754220301289665',
+    clientSecret: process.env.FACEBOOK_SECRET || '41860e58c256a3d7ad8267d3c1939a4a',
     callbackURL: '/auth/facebook/callback',
     passReqToCallback: true
   },
 
-  githubAuth: true,
   github: {
-    clientID: 'Your Client ID',
-    clientSecret: 'Your Client Secret',
+    clientID: process.env.GITHUB_ID || 'cb448b1d4f0c743a1e36',
+    clientSecret: process.env.GITHUB_SECRET || '815aa4606f476444691c5f1c16b9c70da6714dc6',
     callbackURL: '/auth/github/callback',
     passReqToCallback: true
   },
 
-  twitterAuth: true,
   twitter: {
-    consumerKey: 'Your Consumer Key',
-    consumerSecret: 'Your Consumer Secret',
+    consumerKey: process.env.TWITTER_KEY || '6NNBDyJ2TavL407A3lWxPFKBI',
+    consumerSecret: process.env.TWITTER_SECRET  || 'ZHaYyK3DQCqv49Z9ofsYdqiUgeoICyh6uoBgFfu7OeYC7wTQKa',
     callbackURL: '/auth/twitter/callback',
     passReqToCallback: true
   },
 
-  googleAuth: true,
   google: {
-    clientID: '142664224591-88dt7n9rqjl3d90pvlgjtfo50brn2rus.apps.googleusercontent.com',
-    clientSecret: 'uxquGEo1yKkrwtN4zbXw5QC7',
+    clientID: process.env.GOOGLE_ID ||  '142664224591-88dt7n9rqjl3d90pvlgjtfo50brn2rus.apps.googleusercontent.com',
+    clientSecret: process.env.GOOGLE_SECRET ||  'uxquGEo1yKkrwtN4zbXw5QC7',
     callbackURL: '/auth/google/callback',
     passReqToCallback: true
   },
 
-  linkedinAuth: true,
   linkedin: {
-    clientID: 'Your Client ID',
-    clientSecret: 'Your Client Secret',
+    clientID: process.env.LINKEDIN_ID || '77chexmowru601',
+    clientSecret: process.env.LINKEDIN_SECRET || 'szdC8lN2s2SuMSy8',
     callbackURL: '/auth/linkedin/callback',
     scope: ['r_fullprofile', 'r_emailaddress', 'r_network'],
     passReqToCallback: true
   },
 
   steam: {
-    apiKey: 'Your Steam API Key'
+    apiKey: process.env.STEAM_KEY || 'D1240DEF4D41D416FD291D0075B6ED3F'
   },
 
   twilio: {
-    sid: 'Your Twilio SID',
-    token: 'Your Twilio token'
+    sid: process.env.TWILIO_SID || 'AC92e12ae9029e8babae0d9fbb4079b1c1',
+    token: process.env.TWILIO_TOKEN || '2470e51c86e40ac49bbb08c00c00539d'
   },
 
   clockwork: {
-    apiKey: 'Your Clockwork SMS API Key'
+    apiKey: process.env.CLOCKWORK_KEY || 'Your Clockwork SMS API Key'
+  },
+
+  stripe: {
+    apiKey: process.env.STRIPE_KEY || 'sk_test_BQokikJOvBiI2HlWgH4olfQ2'
   },
 
   tumblr: {
-    consumerKey: 'Your Consumer Key',
-    consumerSecret: 'Your Consumer Secret',
+    consumerKey: process.env.TUMBLR_KEY || 'FaXbGf5gkhswzDqSMYI42QCPYoHsu5MIDciAhTyYjehotQpJvM',
+    consumerSecret: process.env.TUMBLR_SECRET || 'QpCTs5IMMCsCImwdvFiqyGtIZwowF5o3UXonjPoNp4HVtJAL4o',
     callbackURL: '/auth/tumblr/callback'
   },
 
   foursquare: {
-    clientId: 'Your Client ID',
-    clientSecret: 'Your Client Secret',
-    redirectUrl: 'http://localhost:3000/auth/foursquare/callback'
+    clientId: process.env.FOURSQUARE_ID || '2STROLSFBMZLAHG3IBA141EM2HGRF0IRIBB4KXMOGA2EH3JG',
+    clientSecret: process.env.FOURSQUARE_SECRET || '2STROLSFBMZLAHG3IBA141EM2HGRF0IRIBB4KXMOGA2EH3JG',
+    redirectUrl: process.env.FOURSQUARE_REDIRECT_URL || 'http://localhost:3000/auth/foursquare/callback'
   },
 
   venmo: {
-    clientId: 'Your Venmo Client ID',
-    clientSecret: 'Your Venmo Client Secret',
-    redirectUrl: 'http://localhost:3000/auth/venmo/callback'
-  },
-
-  paypal: {
-    host: 'api.sandbox.paypal.com', // or api.paypal.com
-    client_id: 'Your Client ID',
-    client_secret: 'Your Client Secret',
-    returnUrl: 'http://localhost:3000/api/paypal/success',
-    cancelUrl: 'http://localhost:3000/api/paypal/cancel'
+    clientId: process.env.VENMO_ID || '1688',
+    clientSecret: process.env.VENMO_SECRET || 'uQXtNBa6KVphDLAEx8suEush3scX8grs',
+    redirectUrl: process.env.VENMO_REDIRECT_URL || 'http://localhost:3000/auth/venmo/callback'
   }
 };

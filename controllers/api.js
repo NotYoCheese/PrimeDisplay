@@ -12,7 +12,7 @@ var tumblr = require('tumblr.js');
 var foursquare = require('node-foursquare')({ secrets: secrets.foursquare });
 var Github = require('github-api');
 var Twit = require('twit');
-var paypal = require('paypal-rest-sdk');
+var stripe =  require('stripe')(secrets.stripe.apiKey);
 var twilio = require('twilio')(secrets.twilio.sid, secrets.twilio.token);
 var Linkedin = require('node-linkedin')(secrets.linkedin.clientID, secrets.linkedin.clientSecret, secrets.linkedin.callbackURL);
 var clockwork = require('clockwork')({key: secrets.clockwork.apiKey});
@@ -24,7 +24,7 @@ var clockwork = require('clockwork')({key: secrets.clockwork.apiKey});
 
 exports.getApi = function(req, res) {
   res.render('api/index', {
-    title: 'API Browser'
+    title: 'API Examples'
   });
 };
 
@@ -76,7 +76,7 @@ exports.getTumblr = function(req, res) {
     token: token.accessToken,
     token_secret: token.tokenSecret
   });
-  client.posts('goddess-of-imaginary-light.tumblr.com', { type: 'photo' }, function(err, data) {
+  client.posts('withinthisnightmare.tumblr.com', { type: 'photo' }, function(err, data) {
     res.render('api/tumblr', {
       title: 'Tumblr API',
       blog: data.blog,
@@ -261,82 +261,6 @@ exports.getTwitter = function(req, res, next) {
 };
 
 /**
- * GET /api/paypal
- * PayPal SDK example.
- */
-
-exports.getPayPal = function(req, res, next) {
-  paypal.configure(secrets.paypal);
-  var payment_details = {
-    'intent': 'sale',
-    'payer': {
-      'payment_method': 'paypal'
-    },
-    'redirect_urls': {
-      'return_url': secrets.paypal.returnUrl,
-      'cancel_url': secrets.paypal.cancelUrl
-    },
-    'transactions': [
-      {
-        'description': 'Node.js Boilerplate',
-        'amount': {
-          'currency': 'USD',
-          'total': '2.99'
-        }
-      }
-    ]
-  };
-  paypal.payment.create(payment_details, function(err, payment) {
-    if (err) return next(err);
-    req.session.payment_id = payment.id;
-    var links = payment.links;
-    for (var i = 0; i < links.length; i++) {
-      if (links[i].rel === 'approval_url') {
-        res.render('api/paypal', {
-          approval_url: links[i].href
-        });
-      }
-    }
-  });
-};
-
-/**
- * GET /api/paypal/success
- * PayPal SDK example.
- */
-
-exports.getPayPalSuccess = function(req, res, next) {
-  var payment_id = req.session.payment_id;
-  var payment_details = { 'payer_id': req.query.PayerID };
-  paypal.payment.execute(payment_id, payment_details, function(error, payment) {
-    if (error) {
-      res.render('api/paypal', {
-        result: true,
-        success: false
-      });
-    } else {
-      res.render('api/paypal', {
-        result: true,
-        success: true
-      });
-    }
-  });
-};
-
-/**
- * GET /api/paypal/cancel
- * PayPal SDK example.
- */
-
-exports.getPayPalCancel = function(req, res, next) {
-  req.session.payment_id = null;
-  res.render('api/paypal', {
-    result: true,
-    canceled: true
-  });
-};
-
-/**
  * GET /api/steam
  * Steam API example.
  */
@@ -384,6 +308,42 @@ exports.getSteam = function(req, res, next) {
 };
 
 /**
+ * GET /api/stripe
+ * Stripe API example.
+ */
+
+exports.getStripe = function(req, res) {
+  res.render('api/stripe', {
+    title: 'Stripe API'
+  });
+};
+
+/**
+ * POST /api/stripe
+ * @param stipeToken
+ * @param stripeEmail
+ */
+
+exports.postStripe = function(req, res, next) {
+  var stripeToken = req.body.stripeToken;
+  var stripeEmail = req.body.stripeEmail;
+
+  stripe.charges.create({
+    amount: 395,
+    currency: 'usd',
+    card: stripeToken,
+    description: stripeEmail
+  }, function(err, charge) {
+    if (err && err.type === 'StripeCardError') {
+      req.flash('errors', { msg: 'Your card has been declined.'});
+      res.redirect('/api/stripe');
+    }
+    req.flash('success', { msg: 'Your card has been charged successfully.'});
+    res.redirect('/api/stripe');
+  });
+};
+
+/**
  * GET /api/twilio
  * Twilio API example.
  */
@@ -408,7 +368,7 @@ exports.postTwilio = function(req, res, next) {
   };
   twilio.sendMessage(message, function(err, responseData) {
     if (err) return next(err.message);
-    req.flash('success', { msg: 'Text sent to ' + responseData.to + '.'})
+    req.flash('success', { msg: 'Text sent to ' + responseData.to + '.'});
     res.redirect('/api/twilio');
   });
 };

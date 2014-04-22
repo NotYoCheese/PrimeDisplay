@@ -5,7 +5,7 @@
 @import "themes/default";
 
 // Scaffolding
-// ---- ---------------------
+// -------------------------
 
 html, body {
   height: 100%;
@@ -22,7 +22,7 @@ body {
   /* Negative indent footer by its height */
   margin: 0 auto -110px;
   /* Pad bottom by footer height + (optional) extra spacing */
-  padding: 0 0 120px;
+  padding: 0 0 140px;
 }
 
 #footer {
@@ -42,17 +42,32 @@ body {
 }
 
 .navbar-brand {
+  background-repeat: no-repeat;
+  background-size: 40px;
+  background-position: left center;
+  padding-left: 50px;
   margin-left: 15px;
   height: 45px;
 }
 
-// Extra space between font-awesome icons and text
+// Social Buttons
+// -------------------------
+
+.btn-social {
+  border-radius: 2px;
+}
+
+// Font Awesome
+// -------------------------
+
 [class^="fa-"],
 [class*="fa-"] {
   margin-right: 5px;
 }
 
-// Thumbnails
+// API Examples
+// -------------------------
+
 .thumb {
   padding-left: 0 !important;
   padding-right: 0 !important;
@@ -77,4 +92,10 @@ body {
   color: #fff;
   padding: 3px;
   bottom: 25px;
+}
+
+.api-examples {
+  img {
+    padding-right: 10px;
+  }
 }
