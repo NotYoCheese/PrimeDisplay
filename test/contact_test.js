@@ -1,6 +1,8 @@
 var chai = require('chai');
 var should = chai.should();
 var app = require('../app.js');
+var request = require('supertest');
+
 var Browser = require('zombie');
 
 
@@ -18,5 +20,6 @@ describe('GET /contact', function() {
           done();
         });
     });
+    request(app)
   });
 });
