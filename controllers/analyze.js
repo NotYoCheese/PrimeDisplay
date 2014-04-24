@@ -39,6 +39,10 @@ var processAnalyzeResult = function(req, res, urlToScrape) {
 
         if (analysisData.pageStats.htmlResponseBytes != undefined)
           rawPageSize += parseInt(analysisData.pageStats.htmlResponseBytes);
+        if (analysisData.pageStats.textResponseBytes != undefined)
+          rawPageSize += parseInt(analysisData.pageStats.textResponseBytes);
+        if (analysisData.pageStats.flashResponseBytes != undefined)
+          rawPageSize += parseInt(analysisData.pageStats.flashResponseBytes);
         if (analysisData.pageStats.cssResponseBytes != undefined)
           rawPageSize += parseInt(analysisData.pageStats.cssResponseBytes);
         if (analysisData.pageStats.imageResponseBytes != undefined)
@@ -50,9 +54,22 @@ var processAnalyzeResult = function(req, res, urlToScrape) {
 
         var humanReadablePageSize = filesize(rawPageSize);
 
-        return res.render('analyze_results', {urlAnalyzed: urlToScrape,
-          humanReadablePageSize: humanReadablePageSize,
-          analysisData: analysisData});
+        var thumbnailSrc = analysisData.screenshot.data;
+        // apparently the google pagespeed API has a bug with their base64 data
+        // to fix it on must:
+        // replace all '_' with '/' and all '-' with '+'.
+        thumbnailSrc = thumbnailSrc.replace(/\_/g, '/');
+        thumbnailSrc = thumbnailSrc.replace(/\-/g, '+');
+        thumbnailSrc = 'data:' + analysisData.screenshot.mime_type + ';base64,' + thumbnailSrc;
+
+        //console.log('source: ' + thumbnailSrc);
+        console.log('width: ' + analysisData.screenshot.width);
+        console.log('height: ' + analysisData.screenshot.height);
+
+        return res.render('analyze_results', {'urlAnalyzed': urlToScrape,
+          'thumbnailSrc': thumbnailSrc,
+          'humanReadablePageSize': humanReadablePageSize,
+          'analysisData': analysisData});
       } else {
         return res.redir('/analyze');
       }
@@ -61,9 +78,11 @@ var processAnalyzeResult = function(req, res, urlToScrape) {
 
 var analyzeSite = function(urlToScrape, completion) {
         //https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url=http://direct.coinsociety.com&key=AIzaSyAOvKPPQgN53SbANdmkXYo4Lqi0FEzetfs
-        var googleUrl = "https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url=" +
-        urlToScrape + 
-        "&key=AIzaSyAQkevzX-WSF47HILMcFns_qVx-y-YmhC0";
+        var googleUrl = 'https://www.googleapis.com/pagespeedonline/v1/runPagespeed?'
+        + 'screenshot=true'
+        + '&key=AIzaSyAQkevzX-WSF47HILMcFns_qVx-y-YmhC0'
+        + '&url='
+        + urlToScrape;
         var req = {
             uri : googleUrl,
             timeout : 50000,
