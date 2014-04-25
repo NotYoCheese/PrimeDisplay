@@ -64,8 +64,8 @@ exports.postImageStatAdd = function(req, res)
                                         }
                                         else
                                         {
-                                                console.log("Saved");
-                                                console.log(check);
+                                                /* console.log("Saved"); */
+                                                /* console.log(check); */
                                         }
                                 });
                         }, 1000);
