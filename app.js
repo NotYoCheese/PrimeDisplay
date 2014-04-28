@@ -78,6 +78,7 @@ var week = day * 7;
 
 var csrfWhitelist = [
   '/this-url-will-bypass-csrf'
+  , '/image-stat/add'
 ];
 
 app.set('port', process.env.PORT || 3000);
@@ -234,7 +235,7 @@ app.get('/my-javascript', myJavaScriptController.getMyJavaScript);
 
 app.get('/image-stat', imageStatController.getImageStat);
 app.get('/image-stat/served', imageStatController.getImageStatServed);
-app.get('/image-stat/add', imageStatController.getImageStatAdd);
+app.post('/image-stat/add', imageStatController.postImageStatAdd);
 
 /**
  * 500 Error Handler.

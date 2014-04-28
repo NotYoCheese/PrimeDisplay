@@ -12,13 +12,16 @@ block content
         #{user}
         #{user._id}
 
-    form(action='http://localhost:3000/image-stat/served/add',method='get',id='pdisform')
+    form(action='http://enigmatic-beach-1528.herokuapp.com/image-stat/add',method='post',id='pdisform')
       |Raw URL
       input(type='text', name='raw_url')
       |User ID:
       if(user)
-        input(type='text', name='user_id', value=user._id)
+        input(type='text', name='_pdAccount', value=user._id)
+        input(type='text', name='_pdDomain', value=user.profile.website)
       else
-        input(type='text', name='user_id')
+        input(type='text', name='_pdAccount')
+        input(type='text', name='_pdDomain')
       input(type='hidden', name='_csrf', value=token)
       input(type='submit',name='served', value='served')
+

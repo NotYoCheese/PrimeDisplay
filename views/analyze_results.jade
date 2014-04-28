@@ -6,6 +6,9 @@ block results
       .col-xs-4.col-xs-offset-4
         table.table
           tr
+            td(colspan='4')
+              img.centered#thumbnailImage(style='margin: 0 auto;width:#{analysisData.screenshot.width};height:#{analysisData.screenshot.height};',src='#{thumbnailSrc}')
+          tr
             td 
               h3.small Perf. Grade
               h3 #{analysisData.score}/100
