@@ -110,6 +110,7 @@ exports.postSignup = function(req, res, next) {
         res.redirect('/');
       });
     });
+  });
 };
 
 /**
