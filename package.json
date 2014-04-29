@@ -62,7 +62,8 @@
     "filesize": "^2.0.3",
     "cluster": "^0.7.7",
     "zombie": "^2.0.0-alpha31",
-    "validator": "^3.11.0"
+    "validator": "^3.11.0",
+    "cloudflare": "0.0.6"
   },
   "devDependencies": {
     "mocha": "^1.18.2",

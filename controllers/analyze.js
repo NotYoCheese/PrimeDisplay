@@ -15,7 +15,7 @@ var formatUrl = function(userInput) {
   return url.format(parsedUrl);
 };
 
-var processAnalyzeResult = function(req, res, urlToScrape) {
+var processAnalyzeResult = function(req, res, responseData) {
   return function(err, data) {
     if (err) {
         var errorMessage = { msg: 'Error connecting to the analyzer: ' 
@@ -62,11 +62,11 @@ var processAnalyzeResult = function(req, res, urlToScrape) {
         thumbnailSrc = thumbnailSrc.replace(/\-/g, '+');
         thumbnailSrc = 'data:' + analysisData.screenshot.mime_type + ';base64,' + thumbnailSrc;
 
-        //console.log('source: ' + thumbnailSrc);
-        console.log('width: ' + analysisData.screenshot.width);
-        console.log('height: ' + analysisData.screenshot.height);
+        // console.log('source: ' + thumbnailSrc);
+        // console.log('width: ' + analysisData.screenshot.width);
+        // console.log('height: ' + analysisData.screenshot.height);
 
-        return res.render('analyze_results', {'urlAnalyzed': urlToScrape,
+        return res.render('analyze_results', {'urlAnalyzed': analysisData.id,
           'thumbnailSrc': thumbnailSrc,
           'humanReadablePageSize': humanReadablePageSize,
           'analysisData': analysisData});
@@ -76,13 +76,13 @@ var processAnalyzeResult = function(req, res, urlToScrape) {
   };
 };
 
-var analyzeSite = function(urlToScrape, completion) {
+var analyzeSite = function(responseData, pageSpeedCompletion) {
         //https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url=http://direct.coinsociety.com&key=AIzaSyAOvKPPQgN53SbANdmkXYo4Lqi0FEzetfs
         var googleUrl = 'https://www.googleapis.com/pagespeedonline/v1/runPagespeed?'
         + 'screenshot=true'
         + '&key=AIzaSyAQkevzX-WSF47HILMcFns_qVx-y-YmhC0'
         + '&url='
-        + urlToScrape;
+        + responseData.urlToScrape;
         var req = {
             uri : googleUrl,
             timeout : 50000,
@@ -92,7 +92,7 @@ var analyzeSite = function(urlToScrape, completion) {
         };
 
         request(req, function(err, response, body) {
-            completion(err, body);
+            pageSpeedCompletion(err, body);
         });
     };
 /**
@@ -121,6 +121,8 @@ exports.postAnalyze = function(req, res) {
   }
   
   var urlToScrape = formatUrl(req.body.site);
+  var responseData = { pageSpeedComplete: false, localPagesComplete: false,
+    urlToScrape: urlToScrape};
 
-  analyzeSite(urlToScrape, processAnalyzeResult(req, res, urlToScrape));
+  analyzeSite(responseData, processAnalyzeResult(req, res, responseData));
 };

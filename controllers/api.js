@@ -16,6 +16,8 @@ var stripe =  require('stripe')(secrets.stripe.apiKey);
 var twilio = require('twilio')(secrets.twilio.sid, secrets.twilio.token);
 var Linkedin = require('node-linkedin')(secrets.linkedin.clientID, secrets.linkedin.clientSecret, secrets.linkedin.callbackURL);
 var clockwork = require('clockwork')({key: secrets.clockwork.apiKey});
+var cloudflare = require('cloudflare').createClient({email: secrets.cloudFlare.email,
+  token: secrets.cloudFlare.apiKey});
 var ig = require('instagram-node').instagram();
 
 /**
@@ -547,10 +549,15 @@ exports.postInstagram = function(req, res, next) {
   ig.use({ access_token: token });
   ig.use({ client_id: secrets.instagram.clientID, client_secret: secrets.instagram.clientSecret });
 
-
-
   ig.user_search('13reasons', function(err, users, limit) {
     console.log(users);
   });
 
 };
+
+exports.getCloudFlare = function(req, res, next) {
+  cloudflare.listDomains(function(err, domains){
+    if (err) throw err;
+    res.render('api/cloudflare', {domains: domains})
+  });
+}

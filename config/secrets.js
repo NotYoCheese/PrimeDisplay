@@ -8,9 +8,14 @@ module.exports = {
   localAuth: true,
 
   googlePageSpeed: {
-    apiKey: 'AIzaSyAOvKPPQgN53SbANdmkXYo4Lqi0FEzetfs'
+    apiKey: process.env.GOOGLE_PAGESPEED_KEY || 'AIzaSyAOvKPPQgN53SbANdmkXYo4Lqi0FEzetfs'
   },
   
+  cloudFlare: {
+    apiKey: process.env.CLOUDFLARE_API_KEY || '23314d1be93633e58b22e783084e6ee110e58',
+    email: process.env.CLOUDFLARE_EMAIL || 'dsimon@nla.com'
+  },
+
   mailgun: {
     login: process.env.MAILGUN_LOGIN || 'postmaster@sandbox697fcddc09814c6b83718b9fd5d4e5dc.mailgun.org',
     password: process.env.MAILGUN_PASSWORD || '29eldds1uri6'
