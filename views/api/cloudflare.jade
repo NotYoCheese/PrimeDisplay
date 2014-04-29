@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+  .page-header
+    h2
+      i.fa.fa-instagram
+      | Cloudflare Client API
+  .btn-group.btn-group-justified
+    a.btn.btn-primary(href='http://www.cloudflare.com/docs/client-api.html', target='_blank')
+      i.fa.fa-check-square-o
+      | Overview
+
+  br
+  p.lead Domain List
+  table.table.table-hover.table-bordered
+    thead
+      tr
+        th Site
+        th Plan
+        th Status
+    tbody
+      for domain in domains
+        tr
+          td= domain.display_name
+          td= domain.props.plan
+          td= domain.zone_status_class.replace('status-', '')
