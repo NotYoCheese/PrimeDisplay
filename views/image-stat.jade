@@ -1,17 +1,46 @@
 extends layout
 
+block head
+  script(src='./js/aviary.js')
+  script(src='http://feather.aviary.com/js/feather.js')
+
 block content
   .page-header
     h1 PrimeDisplay Image Stats
 
-
-    - for (var i in _pd_allImages) {
-         div
-           ul
-             li
-               img(src='#{_pd_allImages[i].raw_url}', width='50')
-             li Impressions: #{_pd_allImages[i].impressions}
-             li Server URL: #{_pd_allImages[i].serve_url}
-             li Created: #{_pd_allImages[i].creationDate}
-             li Everything: #{_pd_allImages[i]}
-    -}
+    each pdImage in _pd_allImages
+      ul
+        li
+          img(id=pdImage._id,
+          src='#{pdImage.raw_url}', 
+          width='50',
+          onclick='return launchEditor("#{pdImage._id}", "#{pdImage.raw_url}");')
+        li Impressions: #{pdImage.impressions}
+        li Server URL: #{pdImage.serve_url}
+        li Created: #{pdImage.creationDate}
+        li Everything: #{pdImage}
+        script.
+          var featherEditor = new Aviary.Feather({
+            apiKey: 'c83c98c0da041785',
+            apiVersion: 3,
+            theme: 'dark',
+            tools: 'all',
+            appendTo: '',
+            onSave: function(imageID, newURL) {
+              var img = document.getElementById(imageID);
+              img.src = newURL;
+            },
+            onError: function(errorObj) {
+              alert(errorObj.message);
+            }
+          });
+          function launchEditor(id, src) {
+            featherEditor.launch({
+              image: id,
+              url: src
+            });
+            return false;
+          }
+        //script.
+          //var myId='!{pdImage._id}';
+          //$('#!{pdImage._id}').click({pdImage: !{JSON.stringify(pdImage)} }, imgClickHandler);
