@@ -21,6 +21,7 @@ node_modules
 Thumbs.db
 
 public/css/styles.css
+secrets.js
 
 buildAssets
 .project
