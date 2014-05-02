@@ -3,7 +3,7 @@ extends analyze
 block results
   .container
     .row
-      .col-xs-4.col-xs-offset-4
+      .col-xs-6.col-xs-offset-3
         table.table
           tr
             td(style='text-align: center', colspan='4')
@@ -16,8 +16,8 @@ block results
               h3.small Requests
               h3 #{analysisData.pageStats.numberResources}
             td
-              h3.small Load Time
-              h3 
-            td
               h3.small Page Size
               h3 #{humanReadablePageSize}
+            td
+              h3.small Image Size
+              h3 #{humanReadableImageSize}

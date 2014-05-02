@@ -9,8 +9,7 @@ var featherEditor = new Aviary.Feather({
 	tools: 'all',
 	appendTo: '',
 	onSave: function(imageID, newURL) {
-		var img = document.getElementById(imageID);
-		img.src = newURL;
+		$('#'+imageID).attr('src', newURL);
 	},
 	onError: function(errorObj) {
 		alert(errorObj.message);

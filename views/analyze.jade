@@ -1,7 +1,7 @@
 extends layout
 
 block head
-    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js')
+    //script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js')
     script(src='./js/analyze.js')
 
 block content
@@ -18,6 +18,5 @@ block content
         input.form-control(type='text', placeholder='type a url here', name='site', id='site', autofocus=true, value='#{urlAnalyzed}')
     .form-group
       .col-sm-offset-2.col-sm-8
-        button.btn.btn-default
-          | Analyze
+        button.btn.btn-primary Analyze
   block results

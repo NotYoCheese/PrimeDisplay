@@ -35,7 +35,8 @@ var processAnalyzeResult = function(req, res, responseData) {
       }
 
       if (analysisData !== undefined) {
-        var rawPageSize = 0;
+        var rawPageSize = 0,
+            imageSize = 0;
 
         if (analysisData.pageStats.htmlResponseBytes != undefined)
           rawPageSize += parseInt(analysisData.pageStats.htmlResponseBytes);
@@ -45,14 +46,17 @@ var processAnalyzeResult = function(req, res, responseData) {
           rawPageSize += parseInt(analysisData.pageStats.flashResponseBytes);
         if (analysisData.pageStats.cssResponseBytes != undefined)
           rawPageSize += parseInt(analysisData.pageStats.cssResponseBytes);
-        if (analysisData.pageStats.imageResponseBytes != undefined)
+        if (analysisData.pageStats.imageResponseBytes != undefined) {
+          imageSize = parseInt(analysisData.pageStats.imageResponseBytes);
           rawPageSize += parseInt(analysisData.pageStats.imageResponseBytes);
+        }
         if (analysisData.pageStats.javascriptResponseBytes != undefined)
           rawPageSize += parseInt(analysisData.pageStats.javascriptResponseBytes);
         if (analysisData.pageStats.otherResponseBytes != undefined)
           rawPageSize += parseInt(analysisData.pageStats.otherResponseBytes);
 
         var humanReadablePageSize = filesize(rawPageSize);
+        var humanReadableImageSize = filesize(imageSize);
 
         var thumbnailSrc = analysisData.screenshot.data;
         // apparently the google pagespeed API has a bug with their base64 data
@@ -69,7 +73,8 @@ var processAnalyzeResult = function(req, res, responseData) {
         return res.render('analyze_results', {'urlAnalyzed': analysisData.id,
           'thumbnailSrc': thumbnailSrc,
           'humanReadablePageSize': humanReadablePageSize,
-          'analysisData': analysisData});
+          'analysisData': analysisData,
+          'humanReadableImageSize': humanReadableImageSize});
       } else {
         return res.redir('/analyze');
       }
