@@ -18,20 +18,20 @@
 
 module.exports = {
 
-  db: process.env.MONGODB || 'mongodb://node-test:reX7MTcDVp16@ds033629.mongolab.com:33629/node-test',
+  db: process.env.MONGODB,
   //db: 'mongodb://localhost/node-test',
 
-  sessionSecret: process.env.SESSION_SECRET || 'reX7MTcDVp16reX7MTcDVp16',
+  sessionSecret: process.env.SESSION_SECRET,
 
   localAuth: true,
 
   googlePageSpeed: {
-    apiKey: process.env.GOOGLE_PAGESPEED_KEY || 'AIzaSyAOvKPPQgN53SbANdmkXYo4Lqi0FEzetfs'
+    apiKey: process.env.GOOGLE_PAGESPEED_KEY
   },
   
   cloudFlare: {
-    apiKey: process.env.CLOUDFLARE_API_KEY || '23314d1be93633e58b22e783084e6ee110e58',
-    email: process.env.CLOUDFLARE_EMAIL || 'dsimon@nla.com'
+    apiKey: process.env.CLOUDFLARE_API_KEY,
+    email: process.env.CLOUDFLARE_EMAIL
   },
 
   mailgun: {
@@ -134,5 +134,10 @@ module.exports = {
     clientId: process.env.VENMO_ID || '1688',
     clientSecret: process.env.VENMO_SECRET || 'uQXtNBa6KVphDLAEx8suEush3scX8grs',
     redirectUrl: process.env.VENMO_REDIRECT_URL || 'http://localhost:3000/auth/venmo/callback'
+  },
+  
+  primeDisplay: {
+    imageSaveSecret: process.env.IMAGE_SAVE_SECRET 
   }
+
 };
