@@ -200,28 +200,25 @@ exports.postAviary = function(req, res, next) {
 
   request(options, function(err, response, body) {
     if (err != null) {
+      req.flash('errors', { msg: 'Image not saved to PrimeDisplay: '+err});
       console.log('error: '+err);
+      res.redirect('/image-stat');
     } else {
       //console.log('response: ' + JSON.stringify(response));
       console.log('body:' + JSON.stringify(body));
       console.log('statusCode: ' + response.statusCode);
       if ((response.statusCode >= 200) && (response.statusCode < 299)) {
+        req.flash('success', { msg: 'Your image has been saved successfully.'});
         console.log('success');
+        res.redirect('/image-stat');
       } else {
+        req.flash('errors', { msg: 'Image not saved to PrimeDisplay: status code ' 
+          + response.statusCode});
         console.log('error');
+        res.redirect('/image-stat');
       }
     }
   });
-
-  // Setup the request.  The options parameter is
-  // the object we defined above.
-  // console.log("\n call http.request...");
-  // var httpReq = http.request(options, function(res)
-  // {
-  //   console.log("\nHTTP REQUEST FOR TEST SAVEURL REQUEST IS DONE");
-  // });
-  req.flash('success', { msg: 'Your image has been saved successfully.'});
-  res.redirect('/image-stat');
 };
 
 /**
