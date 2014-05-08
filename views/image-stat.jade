@@ -7,17 +7,20 @@ block head
 block content
   .page-header
     h1 PrimeDisplay Image Stats
+    input(type='hidden', name='_csrf', value=_csrf, id='_csrf')
+    input(type='hidden', name='user', value=user._id, id='user')
 
     each pdImage in _pd_allImages
       ul
         li
           img(id=pdImage._id,
-          src='#{pdImage.raw_url}', 
-          height='50')
+            data-rawurl=pdImage.raw_url,
+            src='#{pdImage.raw_url}', 
+            height='50')
         li Impressions: #{pdImage.impressions}
         li Server URL: #{pdImage.serve_url}
         li Created: #{pdImage.creationDate}
         li Everything: #{pdImage}
 
         script.
-          $('#!{pdImage._id}').click({pdImage: !{JSON.stringify(pdImage)} }, launchEditor);
+          $('#!{pdImage._id}').click({pdImage: !{JSON.stringify(pdImage)}}, launchEditor);

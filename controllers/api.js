@@ -19,6 +19,7 @@ var clockwork = require('clockwork')({key: secrets.clockwork.apiKey});
 var cloudflare = require('cloudflare').createClient({email: secrets.cloudFlare.email,
   token: secrets.cloudFlare.apiKey});
 var ig = require('instagram-node').instagram();
+var http = require('http');
 
 /**
  * GET /api
@@ -164,6 +165,63 @@ exports.getAviary = function(req, res) {
   res.render('api/aviary', {
     title: 'Aviary API'
   });
+};
+
+
+/**
+ * POST /api/aviary
+ * Save Aviary modified image back to PD
+ */
+exports.postAviary = function(req, res, next) {
+  console.log(req.body);
+
+  var saveUrlData =
+  {
+    user: req.body.user, //MongoLab User table ID
+    urlToReplace: req.body.urlToReplace,
+    editedUrl:  req.body.editedUrl,
+    sharedSecret: secrets.primeDisplay.imageSaveSecret
+  };
+
+  var saveUrlDataString  = JSON.stringify(saveUrlData);
+
+  var headers = {
+    'Content-Type': 'application/json',
+    'Content-Length': saveUrlDataString.length
+  };
+
+  var options = {
+    uri: 'http://pd.nla.com/saveurl',
+    method: 'POST',
+    timeout: 3000,
+    headers: headers,
+    body: saveUrlDataString
+  };
+
+  request(options, function(err, response, body) {
+    if (err != null) {
+      console.log('error: '+err);
+    } else {
+      //console.log('response: ' + JSON.stringify(response));
+      console.log('body:' + JSON.stringify(body));
+      console.log('statusCode: ' + response.statusCode);
+      if ((response.statusCode >= 200) && (response.statusCode < 299)) {
+        console.log('success');
+      } else {
+        console.log('error');
+      }
+    }
+  });
+
+  // Setup the request.  The options parameter is
+  // the object we defined above.
+  // console.log("\n call http.request...");
+  // var httpReq = http.request(options, function(res)
+  // {
+  //   console.log("\nHTTP REQUEST FOR TEST SAVEURL REQUEST IS DONE");
+  // });
+  req.flash('success', { msg: 'Your image has been saved successfully.'});
+  res.redirect('/image-stat');
 };
 
 /**
