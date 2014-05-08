@@ -9,67 +9,47 @@ var ImageStat = require('../models/image-stat');
 exports.getImageStat = function(req, res)
 {
 	var page = (req.param('page') > 0 ? req.param('page') : 1) - 1
-	var perPage = 3
+	var perPage = 10
 	var options = {
 		perPage: perPage,
-		page: page
+		page: page,
+		criteria: {'user': req.user._id}
 	}
 
 	ImageStat.list(options, function(err, results)
 	{
-		if (err) return res.render('500')
-		ImageStat.count().exec(function (err, count)
+		if (err) return res.render('500');
+		ImageStat.count(options.criteria).exec(function (err, count)
 		{
 			res.render('image-stat',
 			{
 				_pd_allImages: results,
 				page: page + 1,
 				pages: Math.ceil(count / perPage),
-createPagination: function (pages, page) {
-	var url = require('url')
-	, qs = require('querystring')
-	, params = qs.parse(url.parse(req.url).query)
-	, str = '<ul class="pagination">'
+	createPagination: function (pages, page) {
+		var url = require('url')
+		, qs = require('querystring')
+		, params = qs.parse(url.parse(req.url).query)
+		, str = '<ul class="pagination">'
 
-	params.page = 0
-	var clas = page == 0 ? "active" : "no"
-	str += '<li class="' + clas + '"><a href="?' + qs.stringify(params) + '">First</a></li>'
-	for (var p = 1; p < pages; p++)
-	{
-		params.page = p
-		clas = page == p ? "active" : "no"
-		str += '<li class="' + clas + '"><a href="?' + qs.stringify(params) + '">' +  p  + '</a></li>'
+		params.page = 0
+		var clas = page == 0 ? "active" : "no"
+		str += '<li class="' + clas + '"><a href="?' + qs.stringify(params) + '">First</a></li>'
+		for (var p = 1; p <= pages; p++)
+		{
+			params.page = p
+			clas = page == p ? "active" : "no"
+			str += '<li class="' + clas + '"><a href="?' + qs.stringify(params) + '">' +  p  + '</a></li>'
+		}
+		params.page = --p
+		clas = page == params.page ? "active" : "no"
+		str += '<li class="' + clas + '"><a href="?' + qs.stringify(params) + '">Last</a></li></ul>'
+
+		return str
 	}
-	params.page = --p
-	clas = page == params.page ? "active" : "no"
-	str += '<li class="' + clas + '"><a href="?' + qs.stringify(params) + '">Last</a></li></ul>'
-
-	return str
-}
-			})
-		})
-	});
-
-/*
-        ImageStat
-	.find()
-	.limit(perPage)
-	.skip(perPage * page)
-	.exec(function(err, results)
-        {
-                if (err)
-                {
-                        res.status(500);
-                        res.send(err);
-                }
-                else
-                {
-                        res.render('image-stat', {
-				_pd_allImages: results
 			});
-                }
-        });
-*/
+		});
+	});
 };
 
 exports.getImageStatServed = function(req, res) {
@@ -91,7 +71,13 @@ exports.postImageStatAdd = function(req, res) {
             } else {
                 result.impressions++;
             }
-            result.save();
+            result.save(function(err) {
+              if(err)
+              {
+                console.log(err);
+              }
+            });
+
             /* NOTE: The following function is here for testing and showing that we are always saving data. However,
             as the save is async the second find could find nothing even though things are working. */
             setTimeout(function() {
