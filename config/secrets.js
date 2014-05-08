@@ -18,10 +18,10 @@
 
 module.exports = {
 
-  db: process.env.MONGODB 
+  db: process.env.MONGODB,
   //db: 'mongodb://localhost/node-test',
 
-  sessionSecret: process.env.SESSION_SECRET 
+  sessionSecret: process.env.SESSION_SECRET,
 
   localAuth: true,
 
@@ -30,8 +30,8 @@ module.exports = {
   },
   
   cloudFlare: {
-    apiKey: process.env.CLOUDFLARE_API_KEY 
-    email: process.env.CLOUDFLARE_EMAIL 
+    apiKey: process.env.CLOUDFLARE_API_KEY,
+    email: process.env.CLOUDFLARE_EMAIL
   },
 
   mailgun: {
