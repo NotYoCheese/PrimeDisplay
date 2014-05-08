@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
+
 var imageStatSchema= new Schema({
   /* user:              {type : Schema.ObjectId, ref : 'User'}, */
   user:         {type: String},
@@ -15,6 +16,26 @@ var imageStatSchema= new Schema({
 imageStatSchema.index({user: 1, user_domain: 1, raw_url: 1}, {unique: true});
 /* imageStatSchema.index({raw_url: 1}, {unique: true}); */
 /* imageStatSchema.index({serve_url: 1}, {unique: true}); */
+
+imageStatSchema.statics = {
+
+  /**
+   * List articles
+   *
+   * @param {Object} options
+   * @param {Function} cb
+   * @api private
+   */
+
+  list: function (options, cb) {
+    var criteria = options.criteria || {}
+
+    this.find(criteria)
+      .limit(options.perPage)
+      .skip(options.perPage * options.page)
+      .exec(cb)
+  }
+}
 
 module.exports = mongoose.model('ImageStat', imageStatSchema);
 

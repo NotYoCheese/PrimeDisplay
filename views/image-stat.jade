@@ -24,3 +24,6 @@ block content
 
         script.
           $('#!{pdImage._id}').click({pdImage: !{JSON.stringify(pdImage)}}, launchEditor);
+
+  - if (pages > 1)
+    != createPagination(pages, page)
