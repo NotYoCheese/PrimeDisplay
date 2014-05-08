@@ -21,6 +21,7 @@ function post_to_url(path, params, method) {
     }
 
     document.body.appendChild(form);
+    console.log('calling form.submit()');
     form.submit();
 }
 
@@ -31,14 +32,15 @@ var featherEditor = new Aviary.Feather({
 	tools: 'all',
 	appendTo: '',
     onSave: function(imageID, newURL) {
-		$('#'+imageID).attr('src', newURL);
         console.log('new Url: \''+newURL+'\'');
+		$('#'+imageID).attr('src', newURL);
         params = {
             _csrf:$('#_csrf').attr('value'),
             urlToReplace: $('#'+imageID).attr('data-rawurl'),
             editedUrl: newURL,
             user: $('#user').attr('value'),
         };
+        console.log('calling post_to_url');
         post_to_url('/api/aviary', params);
 	},
 	onError: function(errorObj) {
@@ -47,6 +49,7 @@ var featherEditor = new Aviary.Feather({
 });
 
 var launchEditor = function(event) {
+    console.log('launching editor');
 	featherEditor.launch({
 		image: event.data.pdImage._id,
 		url: event.data.pdImage.raw_url
