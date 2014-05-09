@@ -1,25 +1,15 @@
 var showAlert = function(type, message) {
 
+  type = type || "notice"
   // class - success
   // alert-danger
-  var alert = $('<div class="alert alert-danger animated fadeIn"> <button type="button" data-dismiss="alert" class="close">×</button> <div>Image not saved to PrimeDisplay: Error: ETIMEDOUT</div></div>');
-//   var messageDiv = document.createElement("div");
-
  
+  // when :notice then "alert alert-info"
+  // when :success then "alert alert-success"
+  // when :error then "alert alert-error"
+  var alert = $('<div class="alert alert-danger animated fadeIn"> <button type="button" data-dismiss="alert" class="close">×</button> <div>Image not saved to PrimeDisplay: Error: ETIMEDOUT</div></div>');
 
   $('#flash').append(alert);
-
-// <button type="button" data-dismiss="alert" class="close">×</button>
-//     for(var key in params) {
-//         if(params.hasOwnProperty(key)) {
-//             var hiddenField = document.createElement("input");
-//             hiddenField.setAttribute("type", "hidden");
-//             hiddenField.setAttribute("name", key);
-//             hiddenField.setAttribute("value", params[key]);
-
-//             form.appendChild(hiddenField);
-//          }
-//     }
 
 };
 
