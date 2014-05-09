@@ -14,8 +14,7 @@ block content
     if user.profile.website && user.profile.website.length > 0
       pre.
         &lt;script>
-          var _pd = _pd || [];
-          _pd.push(['_pdAccount', '#{user._id}']);
+          var _pdAccount = '#{user._id}';
           var _pdimgs = document.getElementsByTagName("img");
           var _pdimgsrc = [];
           for (var i = 0; i < _pdimgs.length; i++) { _pdimgsrc[i] = _pdimgs[i].src; }
@@ -23,11 +22,11 @@ block content
           var _pdimgs = _pdimgs || document.getElementsByTagName("img");
           for (var i = 0; i < _pdimgs.length; i++) {
             x.href = _pdimgs[i].src;
-            if(x.hostname.indexOf('#{user.profile.website}') != -1) {
-  
-              // HEY!! OVER HERE!!! THIS NEEDS TO BE THE REAL URL
-              // _pdimgs[i].src = "https://nlamon.nla.com/cacti/rtr_monitor/imagebeach/index.php?url=" + encodeURIComponent(imgs[i].src) + "&host=" + window.location.hostname;
-  
+            if('https:' == document.location.protocol) {
+              _pdimgs[i].src = "https://pd.nla.com/#{user._id}/wid/hi/u/" + _pdimgs[i].src.substr(7);
+            }
+            else {
+              _pdimgs[i].src = "http://pd.nla.com/#{user._id}/wid/hi/u/" + _pdimgs[i].src.substr(6);
             }
           }
           (function() { var pd = document.createElement('script'); pd.type = 'text/javascript'; pd.async = true; pd.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + '#{_pd_host}/js/pdimg.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(pd, s);})();

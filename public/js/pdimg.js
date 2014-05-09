@@ -48,7 +48,7 @@ function _pd_save_stats()
 			dataType: 'html',
 			// context: document.body,
 			xhrFields: { withCredentials: false },
-			data: {'raw_url' : raw_url, '_pdAccount' : _pd['_pdAccount']},
+			data: {'raw_url' : raw_url, '_pdAccount' : _pdAccount, '_pdDomain': document.location.hostname},
 			success: function()
 			{
 				/* alert('success'); */
@@ -60,3 +60,4 @@ function _pd_save_stats()
 		});
 	}
 }
+
