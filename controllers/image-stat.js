@@ -65,10 +65,25 @@ exports.postImageStatAdd = function(req, res) {
             res.send(err);
         } else {
             var isNew = false;
+            var pdServeURL = '';
+            if(req.body.raw_url.indexOf('http://') == 0)
+            {
+                pdServeURL = 'http://' + GLOBAL.pd_img_website + '/' + req.body._pdAccount + '/wid/hi/u' + req.body.raw_url.substr(6);
+            }
+            else if(req.body.raw_url.indexOf('https://') == 0)
+            {
+                pdServeURL = 'https://' + GLOBAL.pd_img_website + '/' + req.body._pdAccount + '/wid/hi/u' + req.body.raw_url.substr(7);
+            }
+            else
+            {
+                pdServeURL = 'http://' + GLOBAL.pd_img_website + '/' + req.body._pdAccount + '/wid/hi/u' + req.body.raw_url;
+            }
             if(result == null) {
-                result = new ImageStat({'user': req.body._pdAccount, 'user_domain': req.body._pdDomain, 'raw_url': req.body.raw_url, 'impressions': 1});
+                result = new ImageStat({'user': req.body._pdAccount, 'user_domain': req.body._pdDomain, 'raw_url': req.body.raw_url, 'impressions': 1, 'serve_url': pdServeURL});
                 isNew = true;
             } else {
+console.log('MAH saving');
+		result.serve_url = pdServeURL;
                 result.impressions++;
             }
             result.save(function(err) {

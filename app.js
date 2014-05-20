@@ -254,4 +254,8 @@ app.listen(app.get('port'), function() {
   console.log("✔ Express server listening on port %d in %s mode", app.get('port'), app.get('env'));
 });
 
+GLOBAL.pd_local_website = 'localhost:3000';
+GLOBAL.pd_dev_website = 'enigmatic-beach-1528.herokuapp.com';
+GLOBAL.pd_prod_website = 'enigmatic-beach-1528.herokuapp.com';
+GLOBAL.pd_img_website = 'pd.nla.com';
 module.exports = app;
