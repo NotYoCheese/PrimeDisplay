@@ -64,37 +64,42 @@ exports.postImageStatAdd = function(req, res) {
             res.status(500);
             res.send(err);
         } else {
-            var isNew = false;
-            var pdServeURL = '';
-            if(req.body.raw_url.indexOf('http://') == 0)
+            var all_urls = req.body.all_urls;
+            for(i=0; i<all_urls.length; i++)
             {
-                pdServeURL = 'http://' + GLOBAL.pd_img_website + '/' + req.body._pdAccount + '/wid/hi/u' + req.body.raw_url.substr(6);
+                var raw_url = all_urls[i];
+                var isNew = false;
+                var pdServeURL = '';
+                if(raw_url.indexOf('http://') == 0)
+                {
+                    pdServeURL = 'http://' + GLOBAL.pd_img_website + '/' + req.body._pdAccount + '/wid/hi/u' + raw_url.substr(6);
+                }
+                else if(raw_url.indexOf('https://') == 0)
+                {
+                    pdServeURL = 'https://' + GLOBAL.pd_img_website + '/' + req.body._pdAccount + '/wid/hi/u' + raw_url.substr(7);
+                }
+                else
+                {
+                    pdServeURL = 'http://' + GLOBAL.pd_img_website + '/' + req.body._pdAccount + '/wid/hi/u' + raw_url;
+                }
+                if(result == null) {
+                    result = new ImageStat({'user': req.body._pdAccount, 'user_domain': req.body._pdDomain, 'raw_url': raw_url, 'impressions': 1, 'serve_url': pdServeURL});
+                    isNew = true;
+                } else {
+		    result.serve_url = pdServeURL;
+                    result.impressions++;
+                }
+                result.save(function(err) {
+                  if(err)
+                  {
+                    console.log(err);
+                  }
+                });
             }
-            else if(req.body.raw_url.indexOf('https://') == 0)
-            {
-                pdServeURL = 'https://' + GLOBAL.pd_img_website + '/' + req.body._pdAccount + '/wid/hi/u' + req.body.raw_url.substr(7);
-            }
-            else
-            {
-                pdServeURL = 'http://' + GLOBAL.pd_img_website + '/' + req.body._pdAccount + '/wid/hi/u' + req.body.raw_url;
-            }
-            if(result == null) {
-                result = new ImageStat({'user': req.body._pdAccount, 'user_domain': req.body._pdDomain, 'raw_url': req.body.raw_url, 'impressions': 1, 'serve_url': pdServeURL});
-                isNew = true;
-            } else {
-console.log('MAH saving');
-		result.serve_url = pdServeURL;
-                result.impressions++;
-            }
-            result.save(function(err) {
-              if(err)
-              {
-                console.log(err);
-              }
-            });
-
+            res.send({result: 'success'});
+/*
             /* NOTE: The following function is here for testing and showing that we are always saving data. However,
-            as the save is async the second find could find nothing even though things are working. */
+            as the save is async the second find could find nothing even though things are working. * /
             setTimeout(function() {
                 ImageStat.findOne({'user': req.body._pdAccount, 
                     'user_domain': req.body._pdDomain,
@@ -103,12 +108,11 @@ console.log('MAH saving');
                         console.log("WTF");
                         console.log("{'user': " + req.body._pdAccount + ", 'user_domain': " + req.body._pdDomain + ", 'raw_url': " + req.body.raw_url + ", 'impressions': 1}");
                     } else {
-                        /* console.log("Saved"); */
-                        /* console.log(check); */
                     }
                 });
             }, 1000);
             res.send({result: result, isNew: isNew});
+*/
         }
     });
 };
