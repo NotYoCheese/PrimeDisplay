@@ -17,28 +17,22 @@ var ImageStat = require('../models/image-stat.js');
   itself these can be anything.
 */
 
-var wid = Math.floor(Math.random()*1000);
-var hei = Math.floor(Math.random()*1000);
-
-var _pd_user = '533dc0d084808bee0a250747';
-var _pd_user_domain = 'thatswhatshesaid.com';
-var rand_url = 'http://fpoimg.com/' + wid + 'x' + hei;
-var tempImageRecord = {'user': _pd_user, 'user_domain': _pd_user_domain, 'raw_url': rand_url}
 var mySession = undefined;
 
 describe('Requires user to be logged in', function() {
+  var tempUser = undefined;
   before(function(done) {
     mySession = new UserSession();
     mySession.createLoggedInUser(function(err, result) {
       if (err) return done(err);
-      //tempImageRecord.user = result._id;
+      tempUser = result;
       done();
     })
 
   });
 
   after(function(done) {
-    User.remove({email: 'test@gmail.com'}, function(err) {
+    User.remove({email: tempUser.email}, function(err) {
       if (err) return done(err);
       done();
     });
@@ -67,23 +61,48 @@ describe('Requires user to be logged in', function() {
 
 });
 
-describe('Find no temp image record', function(){
-  it('and find none', function(done){
-    ImageStat.find(tempImageRecord, function(err, docs)  {
+describe('Image record API', function() {
+
+  var tempUser = undefined;
+
+  var wid = Math.floor(Math.random()*1000);
+  var hei = Math.floor(Math.random()*1000);
+  var rand_url = 'http://fpoimg.com/' + wid + 'x' + hei;
+//  var tempImageRecord = {'user': _pd_user, 'user_domain': _pd_user_domain, 'raw_url': rand_url}
+
+  var imageData = undefined;
+
+  before(function(done) {
+    mySession = new UserSession();
+    mySession.createLoggedInUser(function(err, result) {
+      if (err) return done(err);
+      tempUser = result;
+      imageData = {
+        all_urls: [rand_url],
+        _pdAccount: tempUser._id,
+        _pdDomain: 'thatswhatshesaid.com',
+        _csrf: mySession.csrfToken()
+      };
+      done();
+    })
+  });
+
+  after(function(done) {
+    User.remove({email: tempUser.email}, function(err) {
+      if (err) return done(err);
+      done();
+    });
+  });
+
+  it('Search for nonexistent record finds none', function(done){
+    ImageStat.find(imageData, function(err, docs)  {
+        if (err) return done(err);
         docs.length.should.equal(0, 'Record found; found: ' + docs.length);
         done();
     });
   });
-});
 
-describe('Add one image stat record' + rand_url, function() {
-	it('use form to add served', function(done) 	{
-    var imageData = {
-      raw_url: rand_url,
-      _pdAccount: _pd_user,
-      _pdDomain: _pd_user_domain,
-      _csrf: mySession.csrfToken()
-    }
+	it('add image record with single url', function(done) 	{
     mySession.session()
       .post('/image-stat/add')
       .send(imageData)
@@ -96,31 +115,21 @@ describe('Add one image stat record' + rand_url, function() {
         done();
       });
 	});
-});
 
-describe('Find one image record', function(){
-  it('Should find one...', function(done){
-    ImageStat.find(tempImageRecord, function(err, docs) {
+  it('should find existing image record', function(done){
+    ImageStat.find({user: tempUser._id}, function(err, docs) {
+      if (err) return done(err);
       docs.length.should.equal(1, 'One record not found; found: ' + docs.length);
       done();
     });
   });
-});
 
-describe('Remove one temp image record', function(){
-  it('remove it...', function(done){
-    ImageStat.findOne(tempImageRecord, function(err, docs) {
+  it('delte existing image record', function(done){
+    ImageStat.findOne({user: tempUser._id}, function(err, docs) {
+      if (err) return done(err);
       docs.remove();
       done();
     });
   });
-});
 
-describe('Find no temp image record', function(){
-  it('and find none', function(done){
-      ImageStat.find(tempImageRecord, function(err, docs) {
-        docs.length.should.equal(0, 'Record found; found: ' + docs.length);
-        done();
-      });
-  });
 });
