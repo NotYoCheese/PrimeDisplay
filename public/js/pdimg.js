@@ -38,26 +38,21 @@ include('http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js', funct
 
 function _pd_save_stats()
 {
-	for (var i = 0; i < _pdimgsrc.length; i++)
-	{
-		x.href = _pdimgsrc[i].src;
-		var raw_url = _pdimgsrc[i];
-		$.ajax({
-			url: 'http://enigmatic-beach-1528.herokuapp.com/image-stat/add',
-			type: 'POST',
-			dataType: 'html',
-			// context: document.body,
-			xhrFields: { withCredentials: false },
-			data: {'raw_url' : raw_url, '_pdAccount' : _pdAccount, '_pdDomain': document.location.hostname},
-			success: function()
-			{
-				/* alert('success'); */
-			},
-			error: function(err)
-			{
-				console.log(err);
-			}
-		});
-	}
+	$.ajax({
+		//url: 'http://localhost:3000/image-stat/add',
+		url: 'http://enigmatic-beach-1528.herokuapp.com/image-stat/add',
+		type: 'POST',
+		dataType: 'html',
+		// context: document.body,
+		xhrFields: { withCredentials: false },
+		data: {'all_urls' : _pdimgsrc, '_pdAccount' : _pdAccount, '_pdDomain': document.location.hostname},
+		success: function()
+		{
+		},
+		error: function(err)
+		{
+			console.log(err);
+		}
+	});
 }
 
