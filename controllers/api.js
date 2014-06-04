@@ -178,7 +178,7 @@ exports.postAviary = function(req, res, next) {
   var saveUrlData =
   {
     user: req.body.user, //MongoLab User table ID
-    urlToReplace: req.body.urlToReplace,
+    xReplace: req.body.urlToReplace,
     editedUrl:  req.body.editedUrl,
     sharedSecret: secrets.primeDisplay.imageSaveSecret
   };
@@ -198,24 +198,31 @@ exports.postAviary = function(req, res, next) {
     body: saveUrlDataString
   };
 
+  var sendSaveResponse = function(response, result, message) {
+    var resultJSON = {
+      result: result,
+      message: message
+    };
+    response.json(resultJSON);
+
+  };
+
   request(options, function(err, response, body) {
     if (err != null) {
       req.flash('errors', { msg: 'Image not saved to PrimeDisplay: '+err});
-      console.log('error: '+err);
-      res.redirect('/image-stat');
+      console.log('here error: '+err);
+      sendSaveResponse(res, 'error', err);
     } else {
       //console.log('response: ' + JSON.stringify(response));
       console.log('body:' + JSON.stringify(body));
       console.log('statusCode: ' + response.statusCode);
       if ((response.statusCode >= 200) && (response.statusCode < 299)) {
-        req.flash('success', { msg: 'Your image has been saved successfully.'});
+        sendSaveResponse(res, 'success', 'Your image has been saved successfully.', err);
         console.log('success');
-        res.redirect('/image-stat');
       } else {
-        req.flash('errors', { msg: 'Image not saved to PrimeDisplay: status code ' 
-          + response.statusCode});
+        sendSaveResponse(res, 'error', 'Image not saved to PrimeDisplay: status code ' 
+          + response.statusCode, err);
         console.log('error');
-        res.redirect('/image-stat');
       }
     }
   });

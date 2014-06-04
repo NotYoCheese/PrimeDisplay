@@ -8,6 +8,11 @@ var ImageStat = require('../models/image-stat');
 
 exports.getImageStat = function(req, res)
 {
+    if (req.user === undefined) {
+        req.flash('errors', {msg: 'You must be logged in to use this feature'});
+        res.redirect('/login');
+        return;
+    }
 	var page = (req.param('page') > 0 ? req.param('page') : 1) - 1
 	var perPage = 10
 	var options = {
