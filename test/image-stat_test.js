@@ -32,10 +32,7 @@ describe('Requires user to be logged in', function() {
   });
 
   after(function(done) {
-    User.remove({email: tempUser.email}, function(err) {
-      if (err) return done(err);
-      done();
-    });
+    mySession.cleanup(done);
   });
 
   it('should work for a logged in user', function(done) {
@@ -88,10 +85,7 @@ describe('Image record API', function() {
   });
 
   after(function(done) {
-    User.remove({email: tempUser.email}, function(err) {
-      if (err) return done(err);
-      done();
-    });
+    mySession.cleanup(done);
   });
 
   it('Search for nonexistent record finds none', function(done){
