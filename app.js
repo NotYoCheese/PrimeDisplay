@@ -34,6 +34,7 @@ var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
 var imageStatController = require('./controllers/image-stat');
+var imageManipulationController = require('./controllers/image_manipulation');
 var myJavaScriptController = require('./controllers/my-javascript');
 
 /**
@@ -43,38 +44,39 @@ var myJavaScriptController = require('./controllers/my-javascript');
 var secrets = require('./config/secrets');
 var passportConf = require('./config/passport');
 
-  /**
-   * Create Express server.
-   */
+/**
+ * Create Express server.
+ */
 
-  var app = express();
-  app.use(cors());
+var app = express();
+app.use(cors());
 
-  /**
-   * Mongoose configuration.
-   */
+/**
+ * Mongoose configuration.
+ */
 
-  mongoose.connect(secrets.db);
+mongoose.connect(secrets.db);
   /* mongoose.connect('mongodb://localhost/primedisplay'); */
-  mongoose.connection.on('error', function() {
-    console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.');
-  });
+mongoose.connection.on('error', function() {
+  console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.');
+});
 
-  /**
-   * Express configuration.
-   */
+/**
+ * Express configuration.
+ */
+
 var hour = 3600000;
 var day = hour * 24;
 var week = day * 7;
 
-  // Modify csrf handling to work with Angular
-  var csrfValue = function(req) {
-    var token = (req.body && req.body._csrf)
-      || (req.query && req.query._csrf)
-      || (req.headers['x-csrf-token'])
-      || (req.headers['x-xsrf-token']);
-    return token;
-  };
+// Modify csrf handling to work with Angular
+var csrfValue = function(req) {
+  var token = (req.body && req.body._csrf)
+    || (req.query && req.query._csrf)
+    || (req.headers['x-csrf-token'])
+    || (req.headers['x-xsrf-token']);
+  return token;
+};
 
 var csrfWhitelist = [
   '/this-url-will-bypass-csrf'
@@ -96,8 +98,8 @@ app.use(bodyParser.urlencoded());
 app.use(expressValidator());
 app.use(methodOverride());
 app.use(function (req, res, next) {
-    res.set('X-Powered-By', 'NLA');
-    next();
+  res.set('X-Powered-By', 'NLA');
+  next();
 });
 app.use(cookieParser());
 app.use(session({
@@ -107,12 +109,20 @@ app.use(session({
     auto_reconnect: true
   })
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next) {
   // Conditional CSRF.
-  if (_.contains(csrfWhitelist, req.path)) return next();
+  if (_.contains(csrfWhitelist, req.path)) return next(); 
   csrf(req, res, next);
+});
+app.use(function(req, res, next) {
+  //console.dir(res.locals);
+  //console.dir(req.session);
+  res.locals.csrftoken = res.locals._csrf;
+  res.cookie('XSRF-TOKEN', res.locals._csrf);
+  next();
 });
 app.use(function(req, res, next) {
   res.locals.user = req.user;
@@ -157,7 +167,7 @@ app.get('/api', apiController.getApi);
 app.get('/api/lastfm', apiController.getLastfm);
 app.get('/api/nyt', apiController.getNewYorkTimes);
 app.get('/api/aviary', apiController.getAviary);
-app.post('/api/aviary', apiController.postAviary);
+app.post('/api/aviary', imageManipulationController.postAviary);
 app.get('/api/steam', apiController.getSteam);
 app.get('/api/stripe', apiController.getStripe);
 app.post('/api/stripe', apiController.postStripe);

@@ -1,13 +1,19 @@
+
+
+var alertClasses = {
+  'notice': 'alert-info',
+  'success': 'alert-success',
+  'error': 'alert-error'
+}
+
 var showAlert = function(type, message) {
 
-  type = type || "notice"
-  // class - success
-  // alert-danger
- 
-  // when :notice then "alert alert-info"
-  // when :success then "alert alert-success"
-  // when :error then "alert alert-error"
-  var alert = $('<div class="alert alert-danger animated fadeIn"> <button type="button" data-dismiss="alert" class="close">×</button> <div>Image not saved to PrimeDisplay: Error: ETIMEDOUT</div></div>');
+  type = type || "notice";
+  console.log('type: '+ type);
+  console.log('class: ' + alertClasses[type]);
+  var alert = $('<div class="alert ' + alertClasses[type] + ' animated fadeIn">'
+    + '<button type="button" data-dismiss="alert" class="close">×</button>'
+    + '<div>' + message + '</div></div>');
 
   $('#flash').append(alert);
 
@@ -27,14 +33,22 @@ var updatePDServer = function(path, params, method) {
   // callback handler that will be called on success
   request.done(function (response, textStatus, jqXHR){
       // log a message to the console
-      showAlert('success', 'yay');
-      console.log("Hooray, it worked!");
-      console.log("response: ");
+      console.log("textStatus: " + textStatus);
+      console.log("jqXHR: ");
+      console.dir(jqXHR);
+      if (jqXHR.responseJSON.result === 'error') {
+        showAlert('error', jqXHR.responseJSON.message);
+      } else {
+        showAlert('success', 'Image Saved!');
+      }
+
   });
 
   // callback handler that will be called on failure
   request.fail(function (jqXHR, textStatus, errorThrown){
       // log the error to the console
+      showAlert('error', textStatus);
+      
       console.error(
           "The following error occured: "+
           textStatus, errorThrown
