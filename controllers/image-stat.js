@@ -126,16 +126,15 @@ exports.postImageStatAdd = function(req, res) {
     ImageStat.findOne(curentItem, processAsyncDBResult(curentItem,
       function(err, result) {
         if (err) {
+          resultArray.push(err);
           console.log('returning error: ' + err);
-          res.status(500);
-          res.send(err);
         } else {
           resultArray.push(result);
-          //console.log('total: ' + urlsToAdd.length + ' numProcessed: ' + (numProcessed +1));
-          if (++numProcessed >= urlsToAdd.length) {
-            res.send({result: resultArray});
-          }
         }
+        if (++numProcessed >= urlsToAdd.length) {
+          res.send({result: resultArray});
+        }
+
       }));
   }
 };
