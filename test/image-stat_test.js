@@ -58,15 +58,23 @@ describe('Requires user to be logged in', function() {
 
 });
 
+var createImageRecords = function(count) {
+  var returnArray = [];
+  var wid;
+  var hei;
+  var rand_url;
+  while (returnArray.length < count) {
+    wid = Math.floor(Math.random()*1000);
+    hei = Math.floor(Math.random()*1000);
+    rand_url = 'http://fpoimg.com/' + wid + 'x' + hei;
+    returnArray.push(rand_url);
+  }
+  return returnArray;
+}
+
 describe('Image record API', function() {
 
   var tempUser = undefined;
-
-  var wid = Math.floor(Math.random()*1000);
-  var hei = Math.floor(Math.random()*1000);
-  var rand_url = 'http://fpoimg.com/' + wid + 'x' + hei;
-//  var tempImageRecord = {'user': _pd_user, 'user_domain': _pd_user_domain, 'raw_url': rand_url}
-
   var imageData = undefined;
 
   before(function(done) {
@@ -74,17 +82,19 @@ describe('Image record API', function() {
     mySession.createLoggedInUser(function(err, result) {
       if (err) return done(err);
       tempUser = result;
+      var url_list = createImageRecords(1);
       imageData = {
-        all_urls: [rand_url],
+        all_urls: url_list,
         _pdAccount: tempUser._id,
         _pdDomain: 'thatswhatshesaid.com',
         _csrf: mySession.csrfToken()
-      };
+      }
       done();
     })
   });
 
   after(function(done) {
+    ImageStat.remove({user: tempUser._id});
     mySession.cleanup(done);
   });
 
@@ -104,11 +114,29 @@ describe('Image record API', function() {
       .end(function(err, res, body){
         if (err) return done(err);
         expect(res.body).to.include.keys('result');
-        res.body.result.impressions.should.equal(1);
-        res.body.isNew.should.equal(true);
+        var resultsArray = res.body.result;
+        resultsArray.length.should.equal(1);
+        resultsArray[0].impressions.should.equal(1);
+        resultsArray[0].isNew.should.equal(true);
         done();
       });
 	});
+
+  it('increment existing image record with single url', function(done)   {
+    mySession.session()
+      .post('/image-stat/add')
+      .send(imageData)
+      .expect(200)
+      .end(function(err, res, body){
+        if (err) return done(err);
+        expect(res.body).to.include.keys('result');
+        var resultsArray = res.body.result;
+        resultsArray.length.should.equal(1);
+        resultsArray[0].impressions.should.equal(2);
+        resultsArray[0].isNew.should.equal(false);
+        done();
+      });
+  });
 
   it('should find existing image record', function(done){
     ImageStat.find({user: tempUser._id}, function(err, docs) {
@@ -118,12 +146,78 @@ describe('Image record API', function() {
     });
   });
 
+
   it('delte existing image record', function(done){
     ImageStat.findOne({user: tempUser._id}, function(err, docs) {
       if (err) return done(err);
       docs.remove();
-      done();
+      ImageStat.findOne({user: tempUser._id}, function(err, docs) {
+        if (err) return done(err);
+        expect(docs).to.be.a('null');
+        done();
+      });
     });
+  });
+
+  it('add multiple image records', function(done){
+    var url_list = createImageRecords(10);
+    var multiUrlImageData = {
+        all_urls: url_list,
+        _pdAccount: tempUser._id,
+        _pdDomain: 'thatswhatshesaid.com',
+        _csrf: mySession.csrfToken()
+      }
+
+    mySession.session()
+      .post('/image-stat/add')
+      .send(multiUrlImageData)
+      .expect(200)
+      .end(function(err, res, body){
+        if (err) return done(err);
+        expect(res.body).to.include.keys('result');
+        var resultsArray = res.body.result;
+        resultsArray.length.should.equal(multiUrlImageData.all_urls.length);
+        var index = 0;
+        for (; index < resultsArray.length; ++index) {
+          resultsArray[index].impressions.should.equal(1);
+          resultsArray[index].isNew.should.equal(true);
+        }
+
+        done();
+      });
+  });
+
+  it('increment multiple image records', function(done){
+    var url_list = createImageRecords(10);
+    var multiUrlImageData = {
+        all_urls: url_list,
+        _pdAccount: tempUser._id,
+        _pdDomain: 'thatswhatshesaid.com',
+        _csrf: mySession.csrfToken()
+      }
+
+    mySession.session()
+      .post('/image-stat/add')
+      .send(multiUrlImageData)
+      .expect(200)
+      .end(function(err, res, body){
+        if (err) return done(err);
+        mySession.session()
+          .post('/image-stat/add')
+          .send(multiUrlImageData)
+          .expect(200)
+          .end(function(err, res, body){
+            expect(res.body).to.include.keys('result');
+            var resultsArray = res.body.result;
+            resultsArray.length.should.equal(multiUrlImageData.all_urls.length);
+            var index = 0;
+            for (; index < resultsArray.length; ++index) {
+              resultsArray[index].impressions.should.equal(2);
+              resultsArray[index].isNew.should.equal(false);
+            }
+          done();
+        });
+      });
   });
 
 });

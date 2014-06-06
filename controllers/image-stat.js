@@ -87,7 +87,7 @@ var processAsyncDBResult = function(curentItem, completion) {
       }
       if(result == null) {
         result = new ImageStat({'user': curentItem.user, 
-          'user_domain': curentItem.userDomain,
+          'user_domain': curentItem.user_domain,
          'raw_url': curentItem.raw_url, 'impressions': 1, 'serve_url': pdServeURL});
         isNew = true;
       } else {
@@ -99,7 +99,9 @@ var processAsyncDBResult = function(curentItem, completion) {
           console.log(err);
           completion(err, undefined);
         } else {
-          completion(undefined, result);
+          var resultObject = result.toObject();
+          resultObject.isNew = isNew;
+          completion(undefined, resultObject);
         }
       });
     }
@@ -113,12 +115,14 @@ exports.postImageStatAdd = function(req, res) {
   var urlsToAdd = imgRequest.all_urls;
   var index = 0;
   var numProcessed = 0;
+  var resultArray = [];
   for(index = 0; index < urlsToAdd.length; index++) {
-    console.log('processing image '+ index + ' ' + urlsToAdd[index]);
+    //console.log('processing image '+ index + ' ' + urlsToAdd[index]);
 
     var curentItem = {'user': userId, 
-      'user_domain': userDomain, 
-      'raw_url': urlsToAdd[index]};
+      'user_domain': userDomain,
+      'raw_url': urlsToAdd[index]
+    };
     ImageStat.findOne(curentItem, processAsyncDBResult(curentItem,
       function(err, result) {
         if (err) {
@@ -126,9 +130,10 @@ exports.postImageStatAdd = function(req, res) {
           res.status(500);
           res.send(err);
         } else {
-          console.log('total: ' + urlsToAdd.length + ' numProcessed: ' + (numProcessed +1));
+          resultArray.push(result);
+          //console.log('total: ' + urlsToAdd.length + ' numProcessed: ' + (numProcessed +1));
           if (++numProcessed >= urlsToAdd.length) {
-            res.send({result: result, isNew: true});
+            res.send({result: resultArray});
           }
         }
       }));
