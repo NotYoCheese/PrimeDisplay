@@ -310,7 +310,7 @@ authForm.on('submit', function() {
   if (instagramCheckbox.checked && index !== -1) {
     passportConfig.splice(index, 1);
     index = passportConfig.indexOf('// Sign in with Instagram.');
-    passportConfig.splice(index, 40);
+    passportConfig.splice(index, 43);
     fs.writeFileSync('config/passport.js', passportConfig.join(os.EOL));
 
     index = loginTemplate.indexOf("      a.btn.btn-block.btn-instagram.btn-social(href='/auth/instagram')");
@@ -338,7 +338,7 @@ authForm.on('submit', function() {
 
 var authText = blessed.text({
   parent: authForm,
-  content: 'Selecting a checkbox adds an authentication provider. Unselecting a checkbox removes it. If authentication provider is already present, no action will be taken.',
+  content: 'Selecting a checkbox removes an authentication provider. If authentication provider is already removed, no action will be taken.',
   padding: 1,
   bg: 'magenta',
   fg: 'white'
@@ -466,8 +466,8 @@ emailForm.on('submit', function() {
 
   var index = contactCtrl.indexOf('var smtpTransport = nodemailer.createTransport(\'SMTP\', {');
   contactCtrl.splice(index + 1, 1, "  service: '" + choice + "',");
-  contactCtrl.splice(index + 3, 1, '       user: secrets.' + choice.toLowerCase() +'.user,');
-  contactCtrl.splice(index + 4, 1, '       pass: secrets.' + choice.toLowerCase() + '.password');
+  contactCtrl.splice(index + 3, 1, '    user: secrets.' + choice.toLowerCase() +'.user,');
+  contactCtrl.splice(index + 4, 1, '    pass: secrets.' + choice.toLowerCase() + '.password');
   fs.writeFileSync('controllers/contact.js', contactCtrl.join(os.EOL));
 
   index = userCtrl.indexOf('      var smtpTransport = nodemailer.createTransport(\'SMTP\', {');

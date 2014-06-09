@@ -13,6 +13,7 @@ var errorHandler = require('errorhandler');
 var csrf = require('lusca').csrf();
 var methodOverride = require('method-override');
 
+var _ = require('lodash');
 var MongoStore = require('connect-mongo')({ session: session });
 var flash = require('express-flash');
 var path = require('path');
@@ -22,7 +23,7 @@ var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
 
 /**
- * Load controllers.
+ * Controllers (route handlers).
  */
 
 var homeController = require('./controllers/home');
@@ -36,7 +37,7 @@ var imageStatController = require('./controllers/image-stat');
 var myJavaScriptController = require('./controllers/my-javascript');
 
 /**
- * API keys + Passport configuration.
+ * API keys and Passport configuration.
  */
 
 var secrets = require('./config/secrets');
@@ -49,6 +50,7 @@ var passportConf = require('./config/passport');
   var app = express();
   app.use(cors());
 
+<<<<<<< HEAD
   /**
    * Mongoose configuration.
    */
@@ -58,6 +60,16 @@ var passportConf = require('./config/passport');
   mongoose.connection.on('error', function() {
     console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.');
   });
+=======
+/**
+ * Connect to MongoDB.
+ */
+
+mongoose.connect(secrets.db);
+mongoose.connection.on('error', function() {
+  console.error('MongoDB Connection Error. Make sure MongoDB is running.');
+});
+>>>>>>> 2c29d576a94f83e46f7ede5e98de2835a3485e39
 
   /**
    * Express configuration.
@@ -76,13 +88,17 @@ var week = day * 7;
   };
 
 /**
- * CSRF Whitelist
+ * CSRF whitelist.
  */
 
+<<<<<<< HEAD
 var csrfWhitelist = [
   '/this-url-will-bypass-csrf'
   , '/image-stat/add'
 ];
+=======
+var csrfExclude = ['/url1', '/url2'];
+>>>>>>> 2c29d576a94f83e46f7ede5e98de2835a3485e39
 
 /**
  * Express configuration.
@@ -91,12 +107,16 @@ var csrfWhitelist = [
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+app.use(compress());
 app.use(connectAssets({
   paths: ['public/css', 'public/js'],
   helperContext: app.locals
 }));
+<<<<<<< HEAD
 app.use(compress());
 //app.use(express.favicon());
+=======
+>>>>>>> 2c29d576a94f83e46f7ede5e98de2835a3485e39
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
@@ -116,27 +136,40 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 app.use(function(req, res, next) {
+<<<<<<< HEAD
   if (csrfWhitelist.indexOf(req.path) !== -1) next();
   else csrf(req, res, next);
+=======
+  // CSRF protection.
+  if (_.contains(csrfExclude, req.path)) return next();
+  csrf(req, res, next);
+>>>>>>> 2c29d576a94f83e46f7ede5e98de2835a3485e39
 });
 app.use(function(req, res, next) {
+  // Make user object available in templates.
   res.locals.user = req.user;
   next();
 });
-app.use(flash());
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 app.use(function(req, res, next) {
-  // Keep track of previous URL to redirect back to
-  // original destination after a successful login.
-  if (req.method !== 'GET') return next();
+  // Remember original destination before login.
   var path = req.path.split('/')[1];
-  if (/(auth|login|logout|signup)$/i.test(path)) return next();
+  if (/auth|login|logout|signup|img|fonts|favicon/i.test(path)) {
+    return next();
+  }
   req.session.returnTo = req.path;
   next();
 });
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 
+<<<<<<< HEAD
 app.options('*', cors());
+=======
+/**
+ * Main routes.
+ */
+>>>>>>> 2c29d576a94f83e46f7ede5e98de2835a3485e39
 
 app.get('/', homeController.index);
 app.get('/about', aboutController.getAbout);
@@ -159,6 +192,11 @@ app.post('/account/profile', passportConf.isAuthenticated, userController.postUp
 app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
+
+/**
+ * API examples routes.
+ */
+
 app.get('/api', apiController.getApi);
 app.get('/api/lastfm', apiController.getLastfm);
 app.get('/api/nyt', apiController.getNewYorkTimes);
@@ -179,6 +217,7 @@ app.get('/api/tumblr', passportConf.isAuthenticated, passportConf.isAuthorized, 
 app.get('/api/facebook', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getFacebook);
 app.get('/api/github', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getGithub);
 app.get('/api/twitter', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getTwitter);
+app.post('/api/twitter', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.postTwitter);
 app.get('/api/venmo', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getVenmo);
 app.post('/api/venmo', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.postVenmo);
 app.get('/api/linkedin', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getLinkedin);
@@ -186,7 +225,7 @@ app.get('/api/instagram', passportConf.isAuthenticated, passportConf.isAuthorize
 app.get('/api/yahoo', apiController.getYahoo);
 
 /**
- * OAuth routes for sign-in.
+ * OAuth sign-in routes.
  */
 
 app.get('/auth/instagram', passport.authenticate('instagram'));
@@ -216,7 +255,7 @@ app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRe
 
 
 /**
- * OAuth routes for API examples that require authorization.
+ * OAuth authorization routes for API examples.
  */
 
 app.get('/auth/foursquare', passport.authorize('foursquare'));
@@ -248,7 +287,6 @@ app.post('/image-stat/add', imageStatController.postImageStatAdd);
 
 /**
  * 500 Error Handler.
- * As of Express 4.0 it must be placed at the end, after all routes.
  */
 
 app.use(errorHandler());
@@ -258,11 +296,15 @@ app.use(errorHandler());
  */
 
 app.listen(app.get('port'), function() {
-  console.log("✔ Express server listening on port %d in %s mode", app.get('port'), app.get('env'));
+  console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
 });
 
+<<<<<<< HEAD
 GLOBAL.pd_local_website = 'localhost:3000';
 GLOBAL.pd_dev_website = 'enigmatic-beach-1528.herokuapp.com';
 GLOBAL.pd_prod_website = 'enigmatic-beach-1528.herokuapp.com';
 GLOBAL.pd_img_website = 'pd.nla.com';
 module.exports = app;
+=======
+module.exports = app;
+>>>>>>> 2c29d576a94f83e46f7ede5e98de2835a3485e39

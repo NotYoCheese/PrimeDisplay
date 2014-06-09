@@ -1,5 +1,5 @@
 /**
- * IMPORTANT NOTICE
+ * IMPORTANT * IMPORTANT * IMPORTANT * IMPORTANT * IMPORTANT * IMPORTANT *
  *
  * You should never commit this file to a public repository on GitHub!
  * All public code on GitHub can be searched, that means anyone can see your
@@ -8,7 +8,7 @@
  * I did it for your convenience using "throw away" credentials so that
  * all features could work out of the box.
  *
- * Untrack secrets.js from Git before pushing your code to GitHub:
+ * Untrack secrets.js before pushing your code to public GitHub repository:
  *
  * git rm --cached config/secrets.js
  *
@@ -35,12 +35,12 @@ module.exports = {
   },
 
   mailgun: {
-    user: process.env.MAILGUN_LOGIN || 'postmaster@sandbox697fcddc09814c6b83718b9fd5d4e5dc.mailgun.org',
+    user: process.env.MAILGUN_USER || 'postmaster@sandbox697fcddc09814c6b83718b9fd5d4e5dc.mailgun.org',
     password: process.env.MAILGUN_PASSWORD || '29eldds1uri6'
   },
   
   mandrill: {
-    user: process.env.MANDRILL_LOGIN || 'hackathonstarterdemo',
+    user: process.env.MANDRILL_USER || 'hackathonstarterdemo',
     password: process.env.MANDRILL_PASSWORD || 'E1K950_ydLR4mHw12a0ldA'
   },
 
@@ -106,12 +106,12 @@ module.exports = {
   },
 
   twilio: {
-    sid: process.env.TWILIO_SID || 'AC92e12ae9029e8babae0d9fbb4079b1c1',
-    token: process.env.TWILIO_TOKEN || '2470e51c86e40ac49bbb08c00c00539d'
+    sid: process.env.TWILIO_SID || 'AC6f0edc4c47becc6d0a952536fc9a6025',
+    token: process.env.TWILIO_TOKEN || 'a67170ff7afa2df3f4c7d97cd240d0f3'
   },
 
   clockwork: {
-    apiKey: process.env.CLOCKWORK_KEY || 'Your Clockwork SMS API Key'
+    apiKey: process.env.CLOCKWORK_KEY || '9ffb267f88df55762f74ba2f517a66dc8bedac5a'
   },
 
   stripe: {
@@ -126,7 +126,7 @@ module.exports = {
 
   foursquare: {
     clientId: process.env.FOURSQUARE_ID || '2STROLSFBMZLAHG3IBA141EM2HGRF0IRIBB4KXMOGA2EH3JG',
-    clientSecret: process.env.FOURSQUARE_SECRET || '2STROLSFBMZLAHG3IBA141EM2HGRF0IRIBB4KXMOGA2EH3JG',
+    clientSecret: process.env.FOURSQUARE_SECRET || 'UAABFAWTIHIUFBL0PDC3TDMSXJF2GTGWLD3BES1QHXKAIYQB',
     redirectUrl: process.env.FOURSQUARE_REDIRECT_URL || 'http://localhost:3000/auth/foursquare/callback'
   },
 
