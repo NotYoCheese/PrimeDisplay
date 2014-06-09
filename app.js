@@ -50,26 +50,14 @@ var passportConf = require('./config/passport');
   var app = express();
   app.use(cors());
 
-<<<<<<< HEAD
   /**
    * Mongoose configuration.
    */
 
   mongoose.connect(secrets.db);
-  /* mongoose.connect('mongodb://localhost/primedisplay'); */
   mongoose.connection.on('error', function() {
     console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.');
   });
-=======
-/**
- * Connect to MongoDB.
- */
-
-mongoose.connect(secrets.db);
-mongoose.connection.on('error', function() {
-  console.error('MongoDB Connection Error. Make sure MongoDB is running.');
-});
->>>>>>> 2c29d576a94f83e46f7ede5e98de2835a3485e39
 
   /**
    * Express configuration.
@@ -91,14 +79,8 @@ var week = day * 7;
  * CSRF whitelist.
  */
 
-<<<<<<< HEAD
-var csrfWhitelist = [
-  '/this-url-will-bypass-csrf'
-  , '/image-stat/add'
-];
-=======
-var csrfExclude = ['/url1', '/url2'];
->>>>>>> 2c29d576a94f83e46f7ede5e98de2835a3485e39
+var csrfExclude = ['/this-url-will-bypass-csrf'
+  , '/image-stat/add'];
 
 /**
  * Express configuration.
@@ -112,11 +94,8 @@ app.use(connectAssets({
   paths: ['public/css', 'public/js'],
   helperContext: app.locals
 }));
-<<<<<<< HEAD
 app.use(compress());
 //app.use(express.favicon());
-=======
->>>>>>> 2c29d576a94f83e46f7ede5e98de2835a3485e39
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
@@ -138,14 +117,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(function(req, res, next) {
-<<<<<<< HEAD
-  if (csrfWhitelist.indexOf(req.path) !== -1) next();
-  else csrf(req, res, next);
-=======
   // CSRF protection.
   if (_.contains(csrfExclude, req.path)) return next();
   csrf(req, res, next);
->>>>>>> 2c29d576a94f83e46f7ede5e98de2835a3485e39
 });
 app.use(function(req, res, next) {
   // Make user object available in templates.
@@ -163,13 +137,10 @@ app.use(function(req, res, next) {
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 
-<<<<<<< HEAD
 app.options('*', cors());
-=======
 /**
  * Main routes.
  */
->>>>>>> 2c29d576a94f83e46f7ede5e98de2835a3485e39
 
 app.get('/', homeController.index);
 app.get('/about', aboutController.getAbout);
@@ -299,12 +270,8 @@ app.listen(app.get('port'), function() {
   console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
 });
 
-<<<<<<< HEAD
 GLOBAL.pd_local_website = 'localhost:3000';
 GLOBAL.pd_dev_website = 'enigmatic-beach-1528.herokuapp.com';
 GLOBAL.pd_prod_website = 'enigmatic-beach-1528.herokuapp.com';
 GLOBAL.pd_img_website = 'pd.nla.com';
 module.exports = app;
-=======
-module.exports = app;
->>>>>>> 2c29d576a94f83e46f7ede5e98de2835a3485e39
