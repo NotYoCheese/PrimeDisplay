@@ -5,7 +5,6 @@ var validator = require('validator');
 var async = require('async');
 var cheerio = require('cheerio');
 var request = require('request');
-var _ = require('underscore');
 var graph = require('fbgraph');
 var LastFmNode = require('lastfm').LastFmNode;
 var tumblr = require('tumblr.js');
@@ -20,6 +19,8 @@ var cloudflare = require('cloudflare').createClient({email: secrets.cloudFlare.e
   token: secrets.cloudFlare.apiKey});
 var ig = require('instagram-node').instagram();
 var http = require('http');
+var Y = require('yui/yql');
+var _ = require('underscore');
 
 /**
  * GET /api
@@ -619,5 +620,20 @@ exports.getCloudFlare = function(req, res, next) {
   cloudflare.listDomains(function(err, domains){
     if (err) throw err;
     res.render('api/cloudflare', {domains: domains})
+  });
+};
+/**
+ * GET /api/yahoo
+ * Yahoo API example.
+ */
+exports.getYahoo = function(req, res) {
+  Y.YQL('SELECT * FROM weather.forecast WHERE (location = 10007)', function(response) {
+    var location = response.query.results.channel.location;
+    var condition = response.query.results.channel.item.condition;
+    res.render('api/yahoo', {
+      title: 'Yahoo API',
+      location: location,
+      condition: condition
+    });
   });
 };

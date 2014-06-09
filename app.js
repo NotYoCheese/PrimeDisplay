@@ -2,7 +2,6 @@
  * Module dependencies.
  */
 
-var _ = require('underscore');
 var express = require('express');
 var cors = require('cors');
 var cookieParser = require('cookie-parser');
@@ -76,10 +75,18 @@ var week = day * 7;
     return token;
   };
 
+/**
+ * CSRF Whitelist
+ */
+
 var csrfWhitelist = [
   '/this-url-will-bypass-csrf'
   , '/image-stat/add'
 ];
+
+/**
+ * Express configuration.
+ */
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
@@ -110,9 +117,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next) {
-  // Conditional CSRF.
-  if (_.contains(csrfWhitelist, req.path)) return next();
-  csrf(req, res, next);
+  if (csrfWhitelist.indexOf(req.path) !== -1) next();
+  else csrf(req, res, next);
 });
 app.use(function(req, res, next) {
   res.locals.user = req.user;
@@ -177,6 +183,7 @@ app.get('/api/venmo', passportConf.isAuthenticated, passportConf.isAuthorized, a
 app.post('/api/venmo', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.postVenmo);
 app.get('/api/linkedin', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getLinkedin);
 app.get('/api/instagram', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getInstagram);
+app.get('/api/yahoo', apiController.getYahoo);
 
 /**
  * OAuth routes for sign-in.
@@ -241,7 +248,7 @@ app.post('/image-stat/add', imageStatController.postImageStatAdd);
 
 /**
  * 500 Error Handler.
- * As of Express 4.0 it must be placed at the end of all routes.
+ * As of Express 4.0 it must be placed at the end, after all routes.
  */
 
 app.use(errorHandler());
