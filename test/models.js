@@ -8,7 +8,7 @@ describe('User Model', function() {
       email: 'test@gmail.com',
       password: 'password'
     });
-    user.save(function(err) {
+    user.save(function(err, user) {
       if (err) return done(err);
       done();
     })

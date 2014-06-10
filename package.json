@@ -72,6 +72,9 @@
     "chai": "^1.9.1",
     "mocha": "^1.20.0",
     "multiline": "^0.3.4",
-    "supertest": "^0.13.0"
+    "supertest": "^0.13.0",
+    "mstring": "^0.1.2",
+    "inquirer": "^0.4.1",
+    "colors": "^0.6.2"
   }
 }

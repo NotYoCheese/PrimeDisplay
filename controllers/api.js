@@ -169,60 +169,6 @@ exports.getAviary = function(req, res) {
   });
 };
 
-
-/**
- * POST /api/aviary
- * Save Aviary modified image back to PD
- */
-exports.postAviary = function(req, res, next) {
-  console.log(req.body);
-
-  var saveUrlData =
-  {
-    user: req.body.user, //MongoLab User table ID
-    urlToReplace: req.body.urlToReplace,
-    editedUrl:  req.body.editedUrl,
-    sharedSecret: secrets.primeDisplay.imageSaveSecret
-  };
-
-  var saveUrlDataString  = JSON.stringify(saveUrlData);
-
-  var headers = {
-    'Content-Type': 'application/json',
-    'Content-Length': saveUrlDataString.length
-  };
-
-  var options = {
-    uri: 'http://pd.nla.com/saveurl',
-    method: 'POST',
-    timeout: 3000,
-    headers: headers,
-    body: saveUrlDataString
-  };
-
-  request(options, function(err, response, body) {
-    if (err != null) {
-      req.flash('errors', { msg: 'Image not saved to PrimeDisplay: '+err});
-      console.log('error: '+err);
-      res.redirect('/image-stat');
-    } else {
-      //console.log('response: ' + JSON.stringify(response));
-      console.log('body:' + JSON.stringify(body));
-      console.log('statusCode: ' + response.statusCode);
-      if ((response.statusCode >= 200) && (response.statusCode < 299)) {
-        req.flash('success', { msg: 'Your image has been saved successfully.'});
-        console.log('success');
-        res.redirect('/image-stat');
-      } else {
-        req.flash('errors', { msg: 'Image not saved to PrimeDisplay: status code ' 
-          + response.statusCode});
-        console.log('error');
-        res.redirect('/image-stat');
-      }
-    }
-  });
-};
-
 /**
  * GET /api/nyt
  * New York Times API example.

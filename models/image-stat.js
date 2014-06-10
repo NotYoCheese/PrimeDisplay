@@ -5,7 +5,7 @@ var ObjectId = Schema.ObjectId;
 
 var imageStatSchema= new Schema({
   /* user:              {type : Schema.ObjectId, ref : 'User'}, */
-  user:         {type: String},
+  user:         {type: ObjectId},
   user_domain:  {type: String},
   impressions:  {type: Number, 'default': 0},
   raw_url:      {type: String, 'default': 'none_' + Math.floor(Math.random()*100000000)},
