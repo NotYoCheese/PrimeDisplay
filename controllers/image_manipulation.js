@@ -44,7 +44,7 @@ exports.postAviary = function(req, res, next) {
   request(options, function(err, response, body) {
     if (err != null) {
       req.flash('errors', { msg: 'Image not saved to PrimeDisplay: '+err});
-      console.log('here error: '+err);
+      console.log('image save error: '+err);
       console.dir(err);
       sendSaveResponse(res, 'error', err);
     } else {
